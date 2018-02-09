@@ -2,4 +2,3 @@
 swagger-codegen
 node_modules
 package-lock.json
-web-front/build/*
