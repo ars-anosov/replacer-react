@@ -1,0 +1,248 @@
+---
+swagger: '2.0'
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  version: 1.0.0
+  title: replacer-reactor
+  description: |
+    Меняет DOM-элементы сайта. Использует движок cheerio.
+
+################################################################################
+#                  Host, Base Path, Schemes and Content Types                  #
+################################################################################
+host: '192.168.13.97:8008'
+basePath: /v2api
+schemes:
+  - http
+produces:
+  - application/json
+consumes:
+  - application/json
+
+################################################################################
+#                                   Tags                                       #
+################################################################################
+tags:
+  - name: http
+    description: работа с http
+################################################################################
+#                                    Paths                                     #
+################################################################################
+paths:
+
+  /feed:
+    get:
+      tags:
+        - Http
+      description: |
+        Работает с "Живой лентой":
+        1) Стягивает с сайта index.html, парсит DOM
+        2) Отдает массив элементов которые отвечают за "Живую ленту"
+      operationId: feed_get
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: idx
+          in: query
+          description: Порядковый номер новости (с единицы)
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/feed_get'
+        '202':
+          description: no list
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    post:
+      tags:
+        - Http
+      description: Добавляет новость в "Живую ленту" 
+      operationId: feed_post
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: |
+            Объект с полями, которые соответствуют DOM-элементам
+          required: true
+          schema:
+            $ref: '#/definitions/feed_add'
+      responses:
+        '200':
+          description: feed created
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: feed not created
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    put:
+      tags:
+        - Http
+      description: Обновляет новость в "Живой ленте"
+      operationId: feed_put
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: idx
+          in: query
+          description: Порядковый номер новости (с единицы)
+          required: true
+          type: integer
+        - name: body
+          in: body
+          description: feed name
+          required: true
+          schema:
+            $ref: '#/definitions/feed_add'
+      responses:
+        '200':
+          description: feed updated
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: feed not updated
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    delete:
+      tags:
+        - Http
+      description: Обновляет новость в "Живой ленте"
+      operationId: feed_del
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: idx
+          in: query
+          description: Порядковый номер новости (с единицы)
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: feed deleted
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: feed not deleted
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    x-swagger-router-controller: Http
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+definitions:
+# feed_get =======================================================================
+  feed_get:
+    type: array
+    items:
+      type: object
+      properties:
+        short_title:
+          type: string
+        short_img:
+          type: string
+        short_comments:
+          type: string
+        long_title:
+          type: string
+        long_date:
+          type: string
+        long_img:
+          type: string
+        long_content:
+          type: string
+
+  feed_add:
+    type: object
+    properties:
+      short_title:
+        type: string
+      short_img:
+        type: string
+      short_comments:
+        type: string
+      long_title:
+        type: string
+      long_date:
+        type: string
+      long_img:
+        type: string
+      long_content:
+        type: string
+
+# System =======================================================================
+  errorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+
+  dummy:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

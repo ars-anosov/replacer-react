@@ -1,0 +1,26 @@
+{
+  "name": "replacer-react-component",
+  "version": "1.0.0",
+  "description": "A package for index.html DOM-objects replacement by React components",
+  "main": "dist/replacer-react-component.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ars-anosov/replacer-react.git"
+  },
+  "keywords": [
+    "crowling",
+    "react-component"
+  ],
+  "author": "Arseniy Anosov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ars-anosov/replacer-react/issues"
+  },
+  "homepage": "https://github.com/ars-anosov/replacer-react#readme",
+  "dependencies": {
+    "swagger-client": "^3.3.3"
+  }
+}
