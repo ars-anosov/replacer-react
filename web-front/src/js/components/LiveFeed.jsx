@@ -32,12 +32,23 @@ export class LiveFeed extends React.Component {
     this.hostSearch = () => {
       var searchResultTemplate = []
 
+      var row_new =   {
+        "short_title": "Новая запись в живой ленте",
+        "short_img": "assets/images/speedtest.png",
+        "short_comments": "Короткий текст новой новости...",
+        "long_title": "Новая запись в живой ленте (всплывашка)",
+        "long_date": "00.00.2000",
+        "long_img": "assets/images/speedtest.png",
+        "long_content": "Длинный текст новой новости..."
+      }
+      searchResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row_new} idx={0} key={0} />)
+
       this.props.swgClient.apis.Http[this.apiCmd.get]({token: this.apiCmd.token, name: this.state.inputHostName, group: this.state.selectHostGroup})
       .then((res) => {
 
         if (res.status === 200) {
           res.body.map( (row, i) => {
-            searchResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row} idx={i+1} key={i}/>)
+            searchResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row} idx={i+1} key={i+1}/>)
           })
         }
         else {
@@ -100,7 +111,7 @@ export class LiveFeed extends React.Component {
     var finalTemplate =
     <div className='live-feed-win'>
       <div className='std-item-header' onClick={this.handleClkShowResult}>{this.props.headerTxt}</div>
-      <br /><button className='get-bttn' onClick={this.handleClkAction} value='search'>Прочитать index.html с сайта</button>
+      <button className='get-bttn' onClick={this.handleClkAction} value='search'>Прочитать index.html с сайта</button>
       <div className={this.state.showResult ? '' : 'display-none'}>{this.state.searchResult}</div>
 
     </div>

@@ -141,6 +141,14 @@ strong {
   padding: 2px;
   font-size: 13px;
 }
+.std-item-header-small-green {
+  background: #49cc90;
+  border: #999 0px solid;
+  border-radius: 4px;
+  margin: 0px;
+  padding: 2px;
+  font-size: 13px;
+}
 
 .std-bttn {
   background: #F5F5F5;
@@ -166,6 +174,12 @@ strong {
 
 .mod-bttn {
   background: #fca130;
+  color: #fff;
+  border: 0px;
+}
+
+.gray-bttn {
+  background: #dddddd;
   color: #fff;
   border: 0px;
 }

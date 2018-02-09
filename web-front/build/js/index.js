@@ -21504,11 +21504,22 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     };_this.hostSearch = function () {
       var searchResultTemplate = [];
 
+      var row_new = {
+        "short_title": "Новая запись в живой ленте",
+        "short_img": "assets/images/speedtest.png",
+        "short_comments": "Короткий текст новой новости...",
+        "long_title": "Новая запись в живой ленте (всплывашка)",
+        "long_date": "00.00.2000",
+        "long_img": "assets/images/speedtest.png",
+        "long_content": "Длинный текст новой новости..."
+      };
+      searchResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row_new, idx: 0, key: 0 })));
+
       _this.props.swgClient.apis.Http[_this.apiCmd.get]({ token: _this.apiCmd.token, name: _this.state.inputHostName, group: _this.state.selectHostGroup }).then(function (res) {
 
         if (res.status === 200) {
           res.body.map(function (row, i) {
-            searchResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i })));
+            searchResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
           });
         } else {
           console.log(res.body);
@@ -21571,7 +21582,6 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
           { className: 'std-item-header', onClick: this.handleClkShowResult },
           this.props.headerTxt
         ),
-        _react2.default.createElement('br', null),
         _react2.default.createElement(
           'button',
           { className: 'get-bttn', onClick: this.handleClkAction, value: 'search' },
@@ -21631,10 +21641,9 @@ var LiveFeedRow = function (_React$Component) {
       long_img: _this.props.row.long_img || '',
       long_content: _this.props.row.long_content || '',
       showResult: false,
-      showModNote: false
+      modBttnClass: 'gray-bttn'
     };
 
-    _this.handleChangeTextDesc = _this.handleChangeTextDesc.bind(_this);
     _this.handleChangeTextNotes = _this.handleChangeTextNotes.bind(_this);
     _this.handleClkShowResult = _this.handleClkShowResult.bind(_this);
     _this.handleClkAction = _this.handleClkAction.bind(_this);
@@ -21649,21 +21658,23 @@ var LiveFeedRow = function (_React$Component) {
 
       // Если результат скрыт, запрашиваем новые занчения
       if (!this.state.showResult) {
-        console.log(this.props);
-        this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.get]({
-          token: this.props.Win.apiCmd.token,
-          idx: this.props.idx
-        }).then(function (res) {
-          _this2.setState({
-            short_title: res.body[0].short_title || '',
-            short_img: res.body[0].short_img || '',
-            short_comments: res.body[0].short_comments || '',
-            long_title: res.body[0].long_title || '',
-            long_date: res.body[0].long_date || '',
-            long_img: res.body[0].long_img || '',
-            long_content: res.body[0].long_content || ''
+        // idx 0 не запрашиваем, это новый feed
+        if (this.props.idx > 0) {
+          this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.get]({
+            token: this.props.Win.apiCmd.token,
+            idx: this.props.idx
+          }).then(function (res) {
+            _this2.setState({
+              short_title: res.body[0].short_title || '',
+              short_img: res.body[0].short_img || '',
+              short_comments: res.body[0].short_comments || '',
+              long_title: res.body[0].long_title || '',
+              long_date: res.body[0].long_date || '',
+              long_img: res.body[0].long_img || '',
+              long_content: res.body[0].long_content || ''
+            });
           });
-        });
+        }
       }
 
       // Показываем/скрываем результат
@@ -21682,8 +21693,9 @@ var LiveFeedRow = function (_React$Component) {
           if (confAnswer) {
             this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.del]({
               token: this.props.Win.apiCmd.token,
-              idx: this.props.row.key
+              idx: this.props.idx
             }).then(function (res) {
+              _this3.setState({ showResult: false });
               _this3.props.Win.hostSearch();
             });
           }
@@ -21692,33 +21704,41 @@ var LiveFeedRow = function (_React$Component) {
 
         case event.target.value === 'mod':
 
-          var notesObj = false;
+          this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.put]({
+            token: this.props.Win.apiCmd.token,
+            idx: this.props.idx,
+            body: {
+              short_title: this.state.short_title,
+              short_img: this.state.short_img,
+              short_comments: this.state.short_comments,
+              long_title: this.state.long_title,
+              long_date: this.state.long_date,
+              long_img: this.state.long_img,
+              long_content: this.state.long_content
+            }
+          }).then(function (res) {
+            _this3.setState({ modBttnClass: 'gray-bttn' });
+          });
 
-          console.log(this.state.notes);
+          break;
 
-          try {
-            notesObj = JSON.parse(this.state.notes);
-          } catch (e) {
-            alert('inventory.notes Must be JSON object!');
-          }
+        case event.target.value === 'add':
 
-          if (notesObj) {
-            this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.put]({
-              token: this.props.Win.apiCmd.token,
-              hostid: this.props.row.hostid,
-              body: {
-                description: this.state.description,
-                inventory: {
-                  notes: this.state.notes
-                }
-              }
-            }).then(function (res) {
-              _this3.setState({ showModNote: true });
-              setTimeout(function () {
-                _this3.setState({ showModNote: false });
-              }, 500);
-            });
-          }
+          this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.post]({
+            token: this.props.Win.apiCmd.token,
+            body: {
+              short_title: this.state.short_title,
+              short_img: this.state.short_img,
+              short_comments: this.state.short_comments,
+              long_title: this.state.long_title,
+              long_date: this.state.long_date,
+              long_img: this.state.long_img,
+              long_content: this.state.long_content
+            }
+          }).then(function (res) {
+            _this3.setState({ showResult: false });
+            _this3.props.Win.hostSearch();
+          });
 
           break;
 
@@ -21729,14 +21749,35 @@ var LiveFeedRow = function (_React$Component) {
       }
     }
   }, {
-    key: 'handleChangeTextDesc',
-    value: function handleChangeTextDesc(event) {
-      this.setState({ description: event.target.value });
-    }
-  }, {
     key: 'handleChangeTextNotes',
     value: function handleChangeTextNotes(event) {
-      this.setState({ notes: event.target.value });
+      switch (event.target.id) {
+        case 'short_title':
+          this.setState({ short_title: event.target.value });
+          break;
+        case 'short_comments':
+          this.setState({ short_comments: event.target.value });
+          break;
+        case 'short_img':
+          this.setState({ short_img: event.target.value });
+          this.setState({ long_img: event.target.value });
+          break;
+        case 'long_title':
+          this.setState({ long_title: event.target.value });
+          break;
+        case 'long_date':
+          this.setState({ long_date: event.target.value });
+          break;
+        case 'long_img':
+          this.setState({ long_img: event.target.value });
+          break;
+        case 'long_content':
+          this.setState({ long_content: event.target.value });
+          break;
+      }
+
+      this.setState({ modBttnClass: 'mod-bttn' });
+      //this.setState({event.target.id: event.target.value})
     }
   }, {
     key: 'render',
@@ -21750,7 +21791,7 @@ var LiveFeedRow = function (_React$Component) {
         { className: 'live-feed-item' },
         _react2.default.createElement(
           'div',
-          { className: 'std-item-header-small', onClick: this.handleClkShowResult },
+          { className: this.props.idx > 0 ? 'std-item-header-small' : 'std-item-header-small-green', onClick: this.handleClkShowResult },
           _react2.default.createElement(
             'small',
             null,
@@ -21758,55 +21799,60 @@ var LiveFeedRow = function (_React$Component) {
             ':'
           ),
           ' ',
-          row.short_title,
-          _react2.default.createElement(
-            'strong',
-            { className: this.state.showModNote ? 'mod-bttn' : 'display-none' },
-            ' \u0418\u0437\u043C\u0435\u043D\u0435\u043D\u043E '
-          )
+          row.short_title
         ),
         _react2.default.createElement(
           'div',
           { className: this.state.showResult ? 'live-feed-item-menu' : 'display-none' },
           'short_title:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { className: 'live-feed-input', type: 'text', value: this.state.short_title, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('input', { id: 'short_title', className: 'live-feed-input', type: 'text', value: this.state.short_title, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           'short_comments:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('textarea', { className: 'live-feed-textarea-small', value: this.state.short_comments, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('textarea', { id: 'short_comments', className: 'live-feed-textarea-small', value: this.state.short_comments, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           'short_img:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { className: 'live-feed-input', type: 'text', value: this.state.short_img, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('input', { id: 'short_img', className: 'live-feed-input', type: 'text', value: this.state.short_img, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           _react2.default.createElement('hr', null),
+          _react2.default.createElement(
+            'h4',
+            null,
+            '\u0412\u0441\u043F\u043B\u044B\u0432\u0430\u0448\u043A\u0430'
+          ),
           'long_title:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { className: 'live-feed-input', type: 'text', value: this.state.long_title, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('input', { id: 'long_title', className: 'live-feed-input', type: 'text', value: this.state.long_title, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           'long_date:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { className: 'live-feed-input', type: 'text', value: this.state.long_date, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('input', { id: 'long_date', className: 'live-feed-input', type: 'text', value: this.state.long_date, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           'long_img:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('input', { className: 'live-feed-input', type: 'text', value: this.state.long_img, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('input', { id: 'long_img', className: 'live-feed-input', type: 'text', value: this.state.long_img, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           'long_content:',
           _react2.default.createElement('br', null),
-          _react2.default.createElement('textarea', { className: 'live-feed-textarea', value: this.state.long_content, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('textarea', { id: 'long_content', className: 'live-feed-textarea', value: this.state.long_content, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
           _react2.default.createElement(
             'button',
-            { className: 'del-bttn', onClick: this.handleClkAction, value: 'del' },
+            { className: this.props.idx > 0 ? 'del-bttn' : 'display-none', onClick: this.handleClkAction, value: 'del' },
             '\u0423\u0434\u0430\u043B\u0438\u0442\u044C'
           ),
           '\xA0',
           _react2.default.createElement(
             'button',
-            { className: 'mod-bttn', onClick: this.handleClkAction, value: 'mod' },
+            { className: this.props.idx > 0 ? this.state.modBttnClass : 'display-none', onClick: this.handleClkAction, value: 'mod' },
             '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: this.props.idx > 0 ? 'display-none' : 'add-bttn', onClick: this.handleClkAction, value: 'add' },
+            '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C'
           )
         )
       );
