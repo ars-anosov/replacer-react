@@ -25,8 +25,9 @@ sudo docker run \
   -v $PWD:/replacer-reactor-node \
   -w /replacer-reactor-node \
   --publish=8008:8008 \
-  --env="FTP_USER=INSERT_HERE_USERNAME" \
-  --env="FTP_PASS=INSERT_HERE_PASSWORD" \
+  --env="SFTP_HOST=INSERT_HERE_HOST_NAME" \
+  --env="SFTP_USER=INSERT_HERE_USERNAME" \
+  --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
   -it \
   node:8 bash
 ```

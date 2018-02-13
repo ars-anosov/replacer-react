@@ -4,11 +4,13 @@
 var nodePath  = process.argv[0]
 var appPath   = process.argv[1]
 
-var ftpUser   = process.argv[2]
-var ftpPass   = process.argv[3]
+var sftpHost   = process.argv[2]
+var sftpUser   = process.argv[3]
+var sftpPass   = process.argv[4]
 
-console.log('FTP User:      '+ftpUser)
-console.log('FTP Password:  '+ftpPass)
+console.log('SFTP Host:      '+sftpHost)
+console.log('SFTP User:      '+sftpUser)
+console.log('SFTP Password:  '+sftpPass)
 console.log()
 
 
@@ -74,6 +76,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         'module': request,
         'reqOptions': reqOptions
       },
+      'sftpHost': sftpHost,
+      'sftpUser': sftpUser,
+      'sftpPass': sftpPass,
       'aaa': null
     };
     next();
