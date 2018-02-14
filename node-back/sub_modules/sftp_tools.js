@@ -14,21 +14,21 @@ module.exports.sftpPut = function sftpPut(connSettings, cb) {
         console.log(err)
         cb({code: 202, message: 'SFTP connection error'})
       }
-       
+
       var srcFilePath = path.join(__dirname,'../static_result/index.html')
       var readStream = fs.createReadStream( srcFilePath );
       var writeStream = sftp.createWriteStream( connSettings.sftpPath+'/index.html' ); // !!! ВНИМАТЕЛЬНО живой сайт !!!
-  
+
       writeStream.on('close',function () {
           console.log( "- file transferred succesfully" );
           cb({code: 200, message: 'remote index.html updated'})
       });
-  
+
       writeStream.on('end', function () {
           console.log( "sftp connection closed" );
           conn.close();
       });
-  
+
       // initiate transfer of file
       readStream.pipe( writeStream );
     });

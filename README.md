@@ -13,10 +13,13 @@
 - [web-front/build/index.html](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/index.html)
 
 ### 1. Backend
-- OpenAPI-сервер обрабатывает REST-запросы от Frontend
-- Взаимодействует с хостингом "живого" сайта по SFTP
+1. OpenAPI-сервер обрабатывает REST-запросы от Frontend
+2. Взаимодействует с хостингом "живого" сайта по SFTP
 
-Работал с тестовым хостингом: ssh 192.168.28.18, path /docker_vol/nginx-html/domolain/test, web-url http://192.168.16.12/domolain/test/
+Работал с тестовым хостингом:
+- ssh host: 192.168.28.18
+- ssh path: /docker_vol/nginx-html/domolain/test
+- web url: http://192.168.16.12/domolain/test/
 
 Для своего проекта - заменить IP и пути:
 ```
@@ -41,4 +44,4 @@ sudo docker run \
 
 ### 2. Frontend
 
-Качаем, используем готовый [Build](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/)
+Готовый [build](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/)
