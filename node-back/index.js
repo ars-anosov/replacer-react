@@ -7,12 +7,16 @@ var appPath   = process.argv[1]
 var sftpHost   = process.argv[2]
 var sftpUser   = process.argv[3]
 var sftpPass   = process.argv[4]
+var sftpPath   = process.argv[5]
+var httpUrl    = process.argv[6]
 
 console.log('SFTP Host:      '+sftpHost)
 console.log('SFTP User:      '+sftpUser)
 console.log('SFTP Password:  '+sftpPass)
+console.log('SFTP path:      '+sftpPath)
 console.log()
-
+console.log('HTTP URL:       '+httpUrl)
+console.log()
 
 
 var fs = require('fs'),
@@ -53,7 +57,7 @@ var swaggerDoc = jsyaml.safeLoad(spec);
 // reqclient --------------------------------------------------------
 const request = require('request');
 var reqOptions = {  
-  url: 'http://xn--80ahqgegdcb.xn--p1ai/',
+  url: httpUrl,
   method: 'GET',
   encoding: 'utf8'
 };
@@ -76,9 +80,13 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         'module': request,
         'reqOptions': reqOptions
       },
-      'sftpHost': sftpHost,
-      'sftpUser': sftpUser,
-      'sftpPass': sftpPass,
+      'sftp': {
+        'host': sftpHost,
+        'port': 22,
+        'username': sftpUser,
+        'password': sftpPass,
+        'sftpPath': sftpPath
+      },
       'aaa': null
     };
     next();

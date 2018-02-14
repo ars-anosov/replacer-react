@@ -4,17 +4,16 @@
 
 var apiTools  = require('../sub_modules/api_tools')
 var cheerio   = require('cheerio')
-var fs        = require('fs')
 
 exports.apiAction = function(req, res, next) {
 
-  var args                = req.swagger.params
+  var idx                 = req.swagger.params.idx.value
   
   var request             = req.myObj.request.module
   var reqOptions          = {...req.myObj.request.reqOptions}
 
 
-  reqOptions.url = reqOptions.url+'/test/index.html'
+  reqOptions.url = reqOptions.url+'/index.html'
   request(reqOptions, function(requestErr, requestRes, requestBody) {
     if (requestRes.statusCode === 200) {
       //console.log(requestRes.statusCode)
@@ -54,8 +53,8 @@ exports.apiAction = function(req, res, next) {
 
 
       //console.log(final)
-      if (args.idx.value) {
-        final = [ final[args.idx.value - 1] ]
+      if (idx) {
+        final = [ final[idx - 1] ]
       }
 
       apiTools.apiResJson(res, final, 200)

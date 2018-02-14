@@ -2,7 +2,7 @@
 
 
 ## Обзор
-Стягивает HTML-код с сайта, меняет содержимое DOM-элементов.
+Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio).
 
 
 ## Установка / Использование
@@ -14,16 +14,22 @@
 
 ### 1. Backend
 - OpenAPI-сервер обрабатывает REST-запросы от Frontend
-- Взаимодействует с хостингом "живого" сайта по FTP
+- Взаимодействует с хостингом "живого" сайта по SFTP
 
+Работал с тестовым хостингом: ssh 192.168.28.18, path /docker_vol/nginx-html/domolain/test, web-url http://192.168.16.12/domolain/test/
+
+Для своего проекта - заменить IP и пути:
 ```
 sudo docker build -t 'replacer-reactor-node:latest' github.com/ars-anosov/replacer-react#:node-back
 
 sudo docker run \
   --name replacer-reactor-node \
   --publish=8008:8008 \
-  --env="FTP_USER=INSERT_HERE_USERNAME" \
-  --env="FTP_PASS=INSERT_HERE_PASSWORD" \
+  --env="SFTP_HOST=192.168.28.18" \
+  --env="SFTP_USER=INSERT_HERE_USERNAME" \
+  --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
+  --env="SFTP_PATH=/docker_vol/nginx-html/domolain/test" \
+  --env="HTTP_URL=http://192.168.16.12/domolain/test/" \
   -it \
   replacer-reactor-node:latest
 ```

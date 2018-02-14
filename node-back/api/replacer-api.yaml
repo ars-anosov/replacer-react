@@ -8,7 +8,7 @@ info:
   version: 1.0.0
   title: replacer-reactor
   description: |
-    Меняет DOM-элементы сайта. Использует движок cheerio.
+    Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio).
 
 ################################################################################
 #                  Host, Base Path, Schemes and Content Types                  #
