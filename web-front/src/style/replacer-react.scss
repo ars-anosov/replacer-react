@@ -21,6 +21,17 @@ body {
   padding: 4px;
 }
 
+.auth-win {
+  background: #fca130;
+  border: 1px solid #999;
+  border-radius: 6px;
+  margin: 5px;
+  padding: 10px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
 pre { 
   font-family: inherit;
   font-size: inherit;

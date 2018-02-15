@@ -13,6 +13,7 @@ export class LiveFeed extends React.Component {
 
     this.handleClkShowResult  = this.handleClkShowResult.bind(this)
 
+    console.log(window.localStorage.getItem('token'))
     this.apiCmd = {
       token:      window.localStorage.getItem('token'),
       get:        'feed_get',
@@ -48,6 +49,9 @@ export class LiveFeed extends React.Component {
         }
         else {
           console.log(res.body)
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
         }
 
         this.setState({apiResult: apiResultTemplate, showResult: true})

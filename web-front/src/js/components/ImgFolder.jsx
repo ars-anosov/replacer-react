@@ -40,6 +40,9 @@ export class ImgFolder extends React.Component {
         }
         else {
           console.log(res.body)
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
         }
 
         this.setState({apiResult: apiResultTemplate, showResult: true})

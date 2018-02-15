@@ -30,6 +30,8 @@ var http = require('http')
 var serverIp = '192.168.13.97'
 var serverPort = 8008
 
+var aaa_handle    = require('./sub_modules/aaa_handle')
+
 //var https = require('https');
 //var httpsServerPort = 8002;
 //var httpsOptions = {
@@ -63,6 +65,9 @@ var reqOptions = {
 };
 
 
+// Глобальные переменные для мутации
+var aaa = {}
+
 
 
 
@@ -87,7 +92,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         'password': sftpPass,
         'sftpPath': sftpPath
       },
-      'aaa': null
+      'aaa': aaa
     };
     next();
   });
@@ -162,6 +167,9 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   app.use(middleware.swaggerValidator({
     validateResponse: true
   }));
+
+  // AAA на базе HTTP Header "token"
+  app.use(aaa_handle.checkAuth)
 
   // Route validated requests to appropriate controller
   app.use(middleware.swaggerRouter(options));

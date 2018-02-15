@@ -49,6 +49,9 @@ export default class LiveFeedRow extends React.Component {
         }
         else {
           console.log(res.body)
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
         }
 
       })
@@ -164,7 +167,9 @@ export default class LiveFeedRow extends React.Component {
 
 
   handleChangeTextNotes(event) {
-    switch (event.target.id) {
+    let spltId = event.target.id.split('-')
+    console.log(spltId[1])
+    switch (spltId[1]) {
       case 'short_title':
         this.setState({short_title: event.target.value})
         this.setState({long_title: event.target.value})
@@ -214,7 +219,7 @@ export default class LiveFeedRow extends React.Component {
       </div>
       <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
         <img src={liveUrl+'/'+this.state.short_img}></img><br />
-        <select id='imgListSelected' size='1' value={this.state.imgListSelected} onChange={this.handleChangeTextNotes}>
+        <select id={this.props.idx+'-imgListSelected'} size='1' value={this.state.imgListSelected} onChange={this.handleChangeTextNotes}>
           {
             this.state.imgList.map((row,i) =>
               <option key={i} value={'assets/images/'+row}>{'assets/images/'+row}</option>
@@ -223,15 +228,15 @@ export default class LiveFeedRow extends React.Component {
         </select>
         <br />
         <br />
-        Заголовок:<br /><input id='short_title' className='live-feed-input' type='text' value={this.state.short_title} onChange={this.handleChangeTextNotes} /><br />
-        Краткое описание:<br /><textarea id='short_comments' className='live-feed-textarea-small' value={this.state.short_comments} onChange={this.handleChangeTextNotes}></textarea><br />
-        <input id='short_img' className='display-none' type='text' value={this.state.short_img} onChange={this.handleChangeTextNotes}/>
+        Заголовок:<br /><input id={this.props.idx+'-short_title'} className='live-feed-input' type='text' value={this.state.short_title} onChange={this.handleChangeTextNotes} /><br />
+        Краткое описание:<br /><textarea id={this.props.idx+'-short_comments'} className='live-feed-textarea-small' value={this.state.short_comments} onChange={this.handleChangeTextNotes}></textarea><br />
+        <input id={this.props.idx+'-short_img'} className='display-none' type='text' value={this.state.short_img} onChange={this.handleChangeTextNotes}/>
         <hr />
         <h3>magnificPopup (Всплывашка)</h3>
-        Краткое описание:<br /><input id='long_title' className='live-feed-input' type='text' value={this.state.long_title} onChange={this.handleChangeTextNotes} /><br />
-        Дата:<br /><input id='long_date' className='live-feed-input' type='text' value={this.state.long_date} onChange={this.handleChangeTextNotes} /><br />
-        Полный текст новости:<br /><textarea id='long_content' className='live-feed-textarea' value={this.state.long_content} onChange={this.handleChangeTextNotes}></textarea><br />
-        <input id='long_img' className='display-none' type='text' value={this.state.long_img} onChange={this.handleChangeTextNotes}/>
+        Краткое описание:<br /><input id={this.props.idx+'-long_title'} className='live-feed-input' type='text' value={this.state.long_title} onChange={this.handleChangeTextNotes} /><br />
+        Дата:<br /><input id={this.props.idx+'-long_date'} className='live-feed-input' type='text' value={this.state.long_date} onChange={this.handleChangeTextNotes} /><br />
+        Полный текст новости:<br /><textarea id={this.props.idx+'-long_content'} className='live-feed-textarea' value={this.state.long_content} onChange={this.handleChangeTextNotes}></textarea><br />
+        <input id={this.props.idx+'-long_img'} className='display-none' type='text' value={this.state.long_img} onChange={this.handleChangeTextNotes}/>
         
         <button className={this.props.idx > 0 ? 'del-bttn' : 'display-none'} onClick={this.handleClkAction} value='del'>Удалить</button>&nbsp;
         <button className={this.props.idx > 0 ? this.state.modBttnClass : 'display-none'} onClick={this.handleClkAction} value='mod'>Изменить</button>

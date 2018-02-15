@@ -2,9 +2,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { OpenApiSwagger, LiveFeed, ImgFolder } from './components/replacer-react-component'
+import { OpenApiSwagger, AuthWin, LiveFeed, ImgFolder } from './components/replacer-react-component'
 
-window.localStorage.setItem('token', 'test')            // По правильному, это должно устанавливаться отдельной компонентой авторизации
 const specUrl = window.localStorage.getItem('specUrl')  // Выставляется в самом начале в index.html
 
 const swg = new OpenApiSwagger(specUrl)
@@ -20,6 +19,7 @@ swg.connect((client, err) => {
   else {
     ReactDOM.render(
       <div>
+        <AuthWin swgClient={client} headerTxt='Авторизация' />
         <LiveFeed swgClient={client} headerTxt='Живая лента' />
         <ImgFolder swgClient={client} headerTxt='Картинки' />
       </div>,

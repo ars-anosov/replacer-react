@@ -23,14 +23,49 @@ schemes:
 #                                   Tags                                       #
 ################################################################################
 tags:
-  - name: http
+  - name: Client
+    description: Авторизация клиента
+  - name: Http
     description: работа с http
-  - name: img
+  - name: Img
     description: работа с картинками
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
 paths:
+
+  /client/token:
+    get:
+      tags:
+      - Client
+      description: Получаем token
+      operationId: token_get
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: auth_name
+        in: query
+        required: true
+        type: string
+        description: Имя пользователя
+      - name: auth_pass
+        in: query
+        required: true
+        type: string
+        description: Пароль
+      responses:
+        200:
+          description: token
+          schema:
+            $ref: '#/definitions/token_get'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Client
+    x-swagger-router-controller: Client
 
   /feed:
     get:
@@ -263,6 +298,13 @@ paths:
 #                                 Definitions                                  #
 ################################################################################
 definitions:
+# token_get =======================================================================
+  token_get:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+
 # feed_get =======================================================================
   feed_get:
     type: array
