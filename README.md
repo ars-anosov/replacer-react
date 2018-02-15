@@ -10,7 +10,6 @@
 Для своего проекта - заменить IP в этих местах:
 - [node-back/api/replacer-api.yaml](https://github.com/ars-anosov/replacer-react/blob/master/node-back/api/replacer-api.yaml)
 - [node-back/index.js](https://github.com/ars-anosov/replacer-react/blob/master/node-back/index.js)
-- [web-front/build/index.html](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/index.html)
 
 ### 1. Backend
 1. OpenAPI-сервер обрабатывает REST-запросы от Frontend
@@ -19,7 +18,7 @@
 Работал с тестовым хостингом:
 - ssh host: 192.168.28.18
 - ssh path: /docker_vol/nginx-html/domolain/test
-- web url: http://192.168.16.12/domolain/test/
+- http url: http://192.168.16.12/domolain/test/
 
 Для своего проекта - заменить IP и пути:
 ```
@@ -45,3 +44,7 @@ sudo docker run \
 ### 2. Frontend
 
 Готовый [build](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/)
+
+В файле [web-front/build/index.html](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/index.html) подменяем переменные на рабочие:
+- liveUrl: адрес живого сайта на который воздействуем
+- specUrl: адрес файла спецификации Backend

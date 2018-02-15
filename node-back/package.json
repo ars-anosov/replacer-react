@@ -24,10 +24,10 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "connect": "^3.2.0",
+    "image-size": "^0.6.2",
     "js-yaml": "^3.3.0",
-    "needle": "^2.1.1",
     "request": "^2.83.0",
     "ssh2": "^0.5.5",
-    "swagger-tools": "0.10.3"
+    "swagger-tools": "^0.10.3"
   }
 }

@@ -5,6 +5,7 @@ var sftpTools  = require('../sub_modules/sftp_tools')
 
 var cheerio   = require('cheerio')
 var fs        = require('fs')
+var path      = require('path')
 
 
 exports.apiAction = function(req, res, next) {
@@ -50,7 +51,11 @@ exports.apiAction = function(req, res, next) {
 
 
       fs.writeFileSync('./static_result/index.html', htmlResult);
-      sftpTools.sftpPut(sftpSettings, (response) => {
+
+      let srcFilePath = path.join(__dirname,'../static_result/index.html')
+      let dstFilePath = sftpSettings.sftpPath+'/index.html'
+
+      sftpTools.sftpPut(sftpSettings, srcFilePath, dstFilePath, (response) => {
         apiTools.apiResJson(res, response, response.code)
       })
       //apiTools.apiResJson(res, {code: 202, message: idx+' idx deleted'}, 202)

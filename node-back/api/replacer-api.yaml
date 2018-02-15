@@ -1,4 +1,3 @@
----
 swagger: '2.0'
 
 ################################################################################
@@ -7,6 +6,8 @@ swagger: '2.0'
 info:
   version: 1.0.0
   title: replacer-reactor
+  contact:
+    email: ars.anosov@gmail.com
   description: |
     Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio).
 
@@ -17,10 +18,6 @@ host: '192.168.13.97:8008'
 basePath: /v2api
 schemes:
   - http
-produces:
-  - application/json
-consumes:
-  - application/json
 
 ################################################################################
 #                                   Tags                                       #
@@ -28,6 +25,8 @@ consumes:
 tags:
   - name: http
     description: работа с http
+  - name: img
+    description: работа с картинками
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
@@ -37,6 +36,7 @@ paths:
     get:
       tags:
         - Http
+      summary: Считать index.html с живого сайта
       description: |
         Работает с "Живой лентой":
         1) Стягивает с сайта index.html, парсит DOM
@@ -49,14 +49,14 @@ paths:
       parameters:
         - name: token
           in: header
-          description: token
           required: true
           type: string
+          description: token
         - name: idx
           in: query
-          description: Порядковый номер новости (с единицы)
           required: false
           type: integer
+          description: Порядковый номер новости (с единицы)
       responses:
         '200':
           description: Ok
@@ -74,6 +74,7 @@ paths:
     post:
       tags:
         - Http
+      summary: Добавить DOM-элементы в index.html
       description: Добавляет новость в "Живую ленту" 
       operationId: feed_post
       produces:
@@ -83,16 +84,16 @@ paths:
       parameters:
         - name: token
           in: header
-          description: token
           required: true
           type: string
+          description: token
         - name: body
           in: body
-          description: |
-            Объект с полями, которые соответствуют DOM-элементам
           required: true
           schema:
             $ref: '#/definitions/feed_add'
+          description: |
+            Объект с полями, которые соответствуют DOM-элементам
       responses:
         '200':
           description: feed created
@@ -119,20 +120,20 @@ paths:
       parameters:
         - name: token
           in: header
-          description: token
           required: true
           type: string
+          description: token
         - name: idx
           in: query
-          description: Порядковый номер новости (с единицы)
           required: true
           type: integer
+          description: Порядковый номер новости (с единицы)
         - name: body
           in: body
-          description: feed name
           required: true
           schema:
             $ref: '#/definitions/feed_add'
+          description: feed name
       responses:
         '200':
           description: feed updated
@@ -164,9 +165,9 @@ paths:
           type: string
         - name: idx
           in: query
-          description: Порядковый номер новости (с единицы)
           required: true
           type: integer
+          description: Порядковый номер новости (с единицы)
       responses:
         '200':
           description: feed deleted
@@ -182,6 +183,82 @@ paths:
             $ref: '#/definitions/errorModel'
       x-swagger-router-controller: Http
     x-swagger-router-controller: Http
+
+  /img:
+    get:
+      tags:
+        - Img
+      summary: Получить список доступных картинок
+      description: |
+        Выдает имена файлов картинок
+      operationId: img_get
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: filename
+          in: query
+          required: false
+          type: string
+          description: имя файла
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/img_get'
+        '202':
+          description: no list
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Img
+    post:
+      tags:
+        - Img
+      summary: Залить картинку
+      description: |
+        Заливает картинку на сайт 
+      operationId: img_post
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: file
+          in: formData
+          required: true
+          type: file
+          description: картинка
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: Image not uploaded
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Img
+    x-swagger-router-controller: Img
+
 ################################################################################
 #                                 Definitions                                  #
 ################################################################################
@@ -224,6 +301,13 @@ definitions:
         type: string
       long_content:
         type: string
+
+# img_get =======================================================================
+  img_get:
+    type: array
+    items:
+      type: string
+
 
 # System =======================================================================
   errorModel:

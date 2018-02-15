@@ -7,17 +7,11 @@ export class LiveFeed extends React.Component {
     super(args)      // наполняю this от Page
 
     this.state = {
-      groupList:        [],
-      inputHostName:    this.props.inputHostName || '',
-      selectHostGroup:  this.props.selectHostGroup || '',
-      showResult:       true,
-      searchResult:     null,
+      showResult:       false,
+      apiResult:        null,
     }
 
-    this.handleChangeInput    = this.handleChangeInput.bind(this)
-    this.handleChangeSelect   = this.handleChangeSelect.bind(this)
     this.handleClkShowResult  = this.handleClkShowResult.bind(this)
-    this.handleClkAction      = this.handleClkAction.bind(this)
 
     this.apiCmd = {
       token:      window.localStorage.getItem('token'),
@@ -25,83 +19,62 @@ export class LiveFeed extends React.Component {
       post:       'feed_post',
       put:        'feed_put',
       del:        'feed_del',
+      imglist_get:    'img_get',
     }
 
 
     //console.log(this.props.swgClient)
-    this.hostSearch = () => {
-      var searchResultTemplate = []
+    this.getFeeds = () => {
+      var apiResultTemplate = []
 
       var row_new =   {
         "short_title": "Новая запись в живой ленте",
-        "short_img": "assets/images/speedtest.png",
+        "short_img": "assets/images/lf-item-img-2.png",
         "short_comments": "Короткий текст новой новости...",
         "long_title": "Новая запись в живой ленте (всплывашка)",
         "long_date": "00.00.2000",
-        "long_img": "assets/images/speedtest.png",
+        "long_img": "assets/images/lf-item-img-2.png",
         "long_content": "Длинный текст новой новости..."
       }
-      searchResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row_new} idx={0} key={0} />)
+      apiResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row_new} idx={0} key={0} />)
 
-      this.props.swgClient.apis.Http[this.apiCmd.get]({token: this.apiCmd.token, name: this.state.inputHostName, group: this.state.selectHostGroup})
+      this.props.swgClient.apis.Http[this.apiCmd.get]({token: this.apiCmd.token})
       .then((res) => {
 
         if (res.status === 200) {
           res.body.map( (row, i) => {
-            searchResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row} idx={i+1} key={i+1}/>)
+            apiResultTemplate.push(<LiveFeedRow {...{Win: this}} row={row} idx={i+1} key={i+1}/>)
           })
         }
         else {
           console.log(res.body)
         }
 
-        this.setState({searchResult: searchResultTemplate, showResult: true})
+        this.setState({apiResult: apiResultTemplate, showResult: true})
       })
       .catch((err) => {
         // err
       })
     }
-
-
-
-
   }
 
 
 
 
 
-  handleChangeInput(event) {
-    this.setState({inputHostName: event.target.value})
-  }
 
-  handleChangeSelect(event) {
-    this.setState({selectHostGroup: event.target.value})
-  }
 
   handleClkShowResult(event) {
+    // Если результат скрыт, запрашиваем заново.
+    if (!this.state.showResult) {
+      this.setState({apiResult: null})
+      this.getFeeds()
+    }
+
     this.setState({showResult: !this.state.showResult})
   }
 
-  handleClkAction(event) {
-    switch (true) {
 
-      case (event.target.value === 'search'):
-        this.setState({searchResult: null})
-        this.hostSearch()
-        break
-
-      case (event.target.value === 'add'):
-        this.hostAdd()
-        break
-
-      default:
-        console.log('default')
-        break
-
-    }
-
-  }
 
 
 
@@ -111,8 +84,7 @@ export class LiveFeed extends React.Component {
     var finalTemplate =
     <div className='live-feed-win'>
       <div className='std-item-header' onClick={this.handleClkShowResult}>{this.props.headerTxt}</div>
-      <button className='get-bttn' onClick={this.handleClkAction} value='search'>Прочитать index.html с сайта</button>
-      <div className={this.state.showResult ? '' : 'display-none'}>{this.state.searchResult}</div>
+      <div className={this.state.showResult ? '' : 'display-none'}>{this.state.apiResult}</div>
 
     </div>
 

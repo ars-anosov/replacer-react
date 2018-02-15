@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { OpenApiSwagger, LiveFeed } from './components/replacer-react-component'
+import { OpenApiSwagger, LiveFeed, ImgFolder } from './components/replacer-react-component'
 
 window.localStorage.setItem('token', 'test')            // По правильному, это должно устанавливаться отдельной компонентой авторизации
 const specUrl = window.localStorage.getItem('specUrl')  // Выставляется в самом начале в index.html
@@ -20,7 +20,8 @@ swg.connect((client, err) => {
   else {
     ReactDOM.render(
       <div>
-        <LiveFeed swgClient={client} headerTxt='LiveFeed component' />
+        <LiveFeed swgClient={client} headerTxt='Живая лента' />
+        <ImgFolder swgClient={client} headerTxt='Картинки' />
       </div>,
       document.getElementById('root')
     )
