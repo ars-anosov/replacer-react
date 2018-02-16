@@ -26,7 +26,7 @@ exports.checkAuth = function(req, res, next) {
       // ----------------------------------------------------------------------------------
       // Здесь какая-нибудь процедура проверки достоверности "token" например в базе данных
       // ----------------------------------------------------------------------------------
-      if (args.token.value === req.myObj.aaa['user']) { tokenCheckResult = 'результат проверки - Ок' }
+      if (args.token.value === req.myObj.aaa['user']) { tokenCheckResult = 'pass' }
 
       apiResponse(tokenCheckResult)
     }
@@ -44,8 +44,7 @@ exports.checkAuth = function(req, res, next) {
 
   function apiResponse(tokenCheckResult) {
     if (tokenCheckResult) {
-      // Если есть результат - наполняю req.myObj.aaa для следующих middleware действий. Пропускаю.
-      req.myObj.aaa = tokenCheckResult
+      // Если есть результат - пропускаю.
       next()
     }
     else {

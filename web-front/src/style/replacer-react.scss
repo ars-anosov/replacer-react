@@ -143,6 +143,7 @@ strong {
   margin: 0px;
   padding: 4px;
   font-size: 14px;
+  cursor: pointer;
 }
 .std-item-header-small {
   background: #eee;
@@ -151,6 +152,7 @@ strong {
   margin: 0px;
   padding: 2px;
   font-size: 13px;
+  cursor: pointer;
 }
 .std-item-header-small-green {
   background: #49cc90;
@@ -160,6 +162,7 @@ strong {
   margin: 0px;
   padding: 2px;
   font-size: 13px;
+  cursor: pointer;
 }
 
 .std-bttn {
@@ -194,4 +197,10 @@ strong {
   background: #dddddd;
   color: #fff;
   border: 0px;
+}
+
+
+
+.cursor {
+  cursor: move;
 }

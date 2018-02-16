@@ -25,11 +25,11 @@ sudo docker run \
   -v $PWD:/replacer-reactor-node \
   -w /replacer-reactor-node \
   --publish=8008:8008 \
+  --env="HTTP_URL=http://192.168.16.12/domolain/test/" \
   --env="SFTP_HOST=192.168.28.18" \
+  --env="SFTP_PATH=/docker_vol/nginx-html/domolain/test" \
   --env="SFTP_USER=INSERT_HERE_USERNAME" \
   --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
-  --env="SFTP_PATH=/docker_vol/nginx-html/domolain/test" \
-  --env="HTTP_URL=http://192.168.16.12/domolain/test/" \
   -it \
   node:8 bash
 ```
@@ -37,6 +37,6 @@ sudo docker run \
 
 ```
 npm install
-node index.js $SFTP_HOST $SFTP_USER $SFTP_PASS $SFTP_PATH $HTTP_URL
+node index.js $HTTP_URL $SFTP_HOST $SFTP_PATH $SFTP_USER $SFTP_PASS
 ```
 Выскочить из контейнера : Ctrl+P+Q

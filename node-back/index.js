@@ -4,19 +4,21 @@
 var nodePath  = process.argv[0]
 var appPath   = process.argv[1]
 
-var sftpHost   = process.argv[2]
-var sftpUser   = process.argv[3]
-var sftpPass   = process.argv[4]
-var sftpPath   = process.argv[5]
-var httpUrl    = process.argv[6]
+var httpUrl    = process.argv[2]
+var sftpHost   = process.argv[3]
+var sftpPath   = process.argv[4]
+var sftpUser   = process.argv[5]
+var sftpPass   = process.argv[6]
 
-console.log('SFTP Host:      '+sftpHost)
-console.log('SFTP User:      '+sftpUser)
-console.log('SFTP Password:  '+sftpPass)
-console.log('SFTP path:      '+sftpPath)
-console.log()
+
 console.log('HTTP URL:       '+httpUrl)
 console.log()
+console.log('SFTP Host:      '+sftpHost)
+console.log('SFTP path:      '+sftpPath)
+console.log('SFTP User:      '+sftpUser)
+console.log('SFTP Password:  '+sftpPass)
+console.log()
+
 
 
 var fs = require('fs'),
@@ -27,7 +29,6 @@ var swaggerTools = require('swagger-tools')
 var jsyaml = require('js-yaml')
 
 var http = require('http')
-var serverIp = '192.168.13.97'
 var serverPort = 8008
 
 var aaa_handle    = require('./sub_modules/aaa_handle')
@@ -56,7 +57,7 @@ var swaggerDoc = jsyaml.safeLoad(spec);
 
 
 
-// reqclient --------------------------------------------------------
+// Глобальные переменные для мутации
 const request = require('request');
 var reqOptions = {  
   url: httpUrl,
@@ -64,10 +65,16 @@ var reqOptions = {
   encoding: 'utf8'
 };
 
-
-// Глобальные переменные для мутации
 var aaa = {}
 
+var sftp = {
+  'port': 22,
+  'host': sftpHost,
+  'sftpPath': sftpPath,
+  'username': sftpUser,
+}
+if (sftpPass) { sftp.password   = sftpPass }
+else          { sftp.privateKey = fs.readFileSync('/root/.ssh/id_rsa') }
 
 
 
@@ -85,13 +92,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
         'module': request,
         'reqOptions': reqOptions
       },
-      'sftp': {
-        'host': sftpHost,
-        'port': 22,
-        'username': sftpUser,
-        'password': sftpPass,
-        'sftpPath': sftpPath
-      },
+      'sftp': sftp,
       'aaa': aaa
     };
     next();
@@ -188,7 +189,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Работаю с модулем http, https ==================================
   // Start the server
   http.createServer(app).listen(serverPort, function () {
-    console.log('Swagger UI started --> http://'+serverIp+':'+serverPort+'/spec-ui/');
+    console.log('Swagger UI started --> http://host:'+serverPort+'/spec-ui/');
   });
 
   //https.createServer(httpsOptions, app).listen(httpsServerPort, function () {
