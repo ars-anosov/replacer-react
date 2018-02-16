@@ -50,6 +50,12 @@ exports.apiAction = function(req, res, next) {
         final[i].short_comments = $(row).text()
       })
 
+      $('.lf-items').children().map((i, row) => {
+        var classTxt = $(row).attr('class')
+        if (classTxt.match(/mfp\-hide/i)) { final[i].checkbox = false }
+        else                              { final[i].checkbox = true }
+      })
+
 
 
       //console.log(final)

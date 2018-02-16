@@ -16,6 +16,7 @@ exports.apiAction = function(req, res, next) {
   var request             = req.myObj.request.module
   
   var reqOptions          = {...req.myObj.request.reqOptions}
+  var displayItem         = body.checkbox ? '' : ' mfp-hide'
 
 
   reqOptions.url = reqOptions.url+'/index.html'
@@ -28,7 +29,7 @@ exports.apiAction = function(req, res, next) {
 
       //Короткие
       var itemStr = ''+
-'\n\t\t\t\t\t\t<div class="lf-item">'+
+'\n\t\t\t\t\t\t<div class="lf-item'+displayItem+'">'+
 '\n\t\t\t\t\t\t\t<div class="lf-item__img">'+
 '\n\t\t\t\t\t\t\t\t<img src="'+body.short_img+'">'+
 '\n\t\t\t\t\t\t\t</div>'+

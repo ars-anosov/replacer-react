@@ -325,6 +325,8 @@ definitions:
           type: string
         long_content:
           type: string
+        checkbox:
+          type: boolean
 
   feed_add:
     type: object
@@ -343,6 +345,8 @@ definitions:
         type: string
       long_content:
         type: string
+      checkbox:
+          type: boolean
 
 # img_get =======================================================================
   img_get:

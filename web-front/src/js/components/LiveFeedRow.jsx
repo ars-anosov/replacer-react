@@ -7,6 +7,7 @@ export default class LiveFeedRow extends React.Component {
     super(args)      // наполняю this от Win
 
     this.state = {
+      checkbox:         this.props.row.checkbox || false,
       short_title:      this.props.row.short_title || '',
       short_img:        this.props.row.short_img || '',
       short_comments:   this.props.row.short_comments || '',
@@ -48,7 +49,6 @@ export default class LiveFeedRow extends React.Component {
           this.setState({imgList: res.body})
         }
         else {
-          console.log(res.body)
           if (res.body.message === 'token Unauthorized') {
             document.getElementById('auth-win').setAttribute('class', 'auth-win')
           }
@@ -67,6 +67,7 @@ export default class LiveFeedRow extends React.Component {
         })
         .then((res) => {
           this.setState({
+            checkbox:         res.body[0].checkbox || '',
             short_title:      res.body[0].short_title || '',
             short_img:        res.body[0].short_img || '',
             short_comments:   res.body[0].short_comments || '',
@@ -109,6 +110,7 @@ export default class LiveFeedRow extends React.Component {
             token: this.props.Win.apiCmd.token,
             idx: this.props.idx,
             body: {
+              checkbox:         this.state.checkbox,
               short_title:      this.state.short_title,
               short_img:        this.state.short_img,
               short_comments:   this.state.short_comments,
@@ -134,6 +136,7 @@ export default class LiveFeedRow extends React.Component {
           this.props.Win.props.swgClient.apis.Http[this.props.Win.apiCmd.post]({
             token: this.props.Win.apiCmd.token,
             body: {
+              checkbox:         this.state.checkbox,
               short_title:      this.state.short_title,
               short_img:        this.state.short_img,
               short_comments:   this.state.short_comments,
@@ -168,8 +171,10 @@ export default class LiveFeedRow extends React.Component {
 
   handleChangeTextNotes(event) {
     let spltId = event.target.id.split('-')
-    console.log(spltId[1])
     switch (spltId[1]) {
+      case 'checkbox':
+        this.setState({checkbox: !this.state.checkbox})
+        break
       case 'short_title':
         this.setState({short_title: event.target.value})
         this.setState({long_title: event.target.value})
@@ -212,12 +217,17 @@ export default class LiveFeedRow extends React.Component {
     let row = this.props.row
     const liveUrl = window.localStorage.getItem('liveUrl')  // Выставляется в самом начале в index.html
 
+    var rowColor = 'std-item-header-small'
+    if (this.props.idx === 0) { rowColor = 'std-item-header-small-green' }
+    if (this.state.checkbox)  { rowColor = 'std-item-header-small-blue' }
+
     finalTemplate =
     <div className='live-feed-item'>
-      <div className={this.props.idx > 0 ? 'std-item-header-small' : 'std-item-header-small-green'} onClick={this.handleClkShowResult}>
+      <div className={rowColor} onClick={this.handleClkShowResult}>
         <small>{row.long_date}:</small> {row.short_title}
       </div>
       <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
+        <input id={this.props.idx+'-checkbox'} className='checkbox-big' type='checkbox' checked={this.state.checkbox} onChange={this.handleChangeTextNotes} /><br />
         <img src={liveUrl+'/'+this.state.short_img}></img><br />
         <select id={this.props.idx+'-imgListSelected'} size='1' value={this.state.imgListSelected} onChange={this.handleChangeTextNotes}>
           {
@@ -233,7 +243,7 @@ export default class LiveFeedRow extends React.Component {
         <input id={this.props.idx+'-short_img'} className='display-none' type='text' value={this.state.short_img} onChange={this.handleChangeTextNotes}/>
         <hr />
         <h3>magnificPopup (Всплывашка)</h3>
-        Краткое описание:<br /><input id={this.props.idx+'-long_title'} className='live-feed-input' type='text' value={this.state.long_title} onChange={this.handleChangeTextNotes} /><br />
+        Заголовок:<br /><input id={this.props.idx+'-long_title'} className='live-feed-input' type='text' value={this.state.long_title} onChange={this.handleChangeTextNotes} /><br />
         Дата:<br /><input id={this.props.idx+'-long_date'} className='live-feed-input' type='text' value={this.state.long_date} onChange={this.handleChangeTextNotes} /><br />
         Полный текст новости:<br /><textarea id={this.props.idx+'-long_content'} className='live-feed-textarea' value={this.state.long_content} onChange={this.handleChangeTextNotes}></textarea><br />
         <input id={this.props.idx+'-long_img'} className='display-none' type='text' value={this.state.long_img} onChange={this.handleChangeTextNotes}/>

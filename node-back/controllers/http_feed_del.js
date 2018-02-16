@@ -26,7 +26,7 @@ exports.apiAction = function(req, res, next) {
 
       // Удаляю элемент
       if (idx > 0) {
-        $('.lf-item').eq(idx-1).remove()
+        $('.lf-items').children().eq(idx-1).remove()
         $('#article-'+idx).remove()
       }
 

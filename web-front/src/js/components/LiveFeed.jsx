@@ -13,7 +13,6 @@ export class LiveFeed extends React.Component {
 
     this.handleClkShowResult  = this.handleClkShowResult.bind(this)
 
-    console.log(window.localStorage.getItem('token'))
     this.apiCmd = {
       token:      window.localStorage.getItem('token'),
       get:        'feed_get',
@@ -29,6 +28,7 @@ export class LiveFeed extends React.Component {
       var apiResultTemplate = []
 
       var row_new =   {
+        "checkbox": false,
         "short_title": "Новая запись в живой ленте",
         "short_img": "assets/images/lf-item-img-2.png",
         "short_comments": "Короткий текст новой новости...",
@@ -48,7 +48,6 @@ export class LiveFeed extends React.Component {
           })
         }
         else {
-          console.log(res.body)
           if (res.body.message === 'token Unauthorized') {
             document.getElementById('auth-win').setAttribute('class', 'auth-win')
           }
