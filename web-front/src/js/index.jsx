@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { OpenApiSwagger, AuthWin, LiveFeed, ImgFolder } from './components/replacer-react-component'
+import { OpenApiSwagger, AuthWin, LiveFeed, ImgFolder, ScriptAddr, Price } from './components/replacer-react-component'
 
 const specUrl = window.localStorage.getItem('specUrl')  // Выставляется в самом начале в index.html
 
@@ -22,6 +22,8 @@ swg.connect((client, err) => {
         <AuthWin swgClient={client} headerTxt='Авторизация' />
         <LiveFeed swgClient={client} headerTxt='Живая лента' />
         <ImgFolder swgClient={client} headerTxt='Картинки' />
+        <ScriptAddr swgClient={client} headerTxt='Адреса' />
+        <Price swgClient={client} headerTxt='Цены' />
       </div>,
       document.getElementById('root')
     )

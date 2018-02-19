@@ -26,9 +26,11 @@ tags:
   - name: Client
     description: Авторизация клиента
   - name: Http
-    description: работа с http
+    description: работа с index.html
   - name: Img
-    description: работа с картинками
+    description: работа с картинками (assets/images)
+  - name: Script
+    description: работа со скриптами (assets/scripts)
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
@@ -67,11 +69,11 @@ paths:
       x-swagger-router-controller: Client
     x-swagger-router-controller: Client
 
-  /feed:
+  /http/feed:
     get:
       tags:
         - Http
-      summary: Считать index.html с живого сайта
+      summary: Получить элементы live-feed
       description: |
         Работает с "Живой лентой":
         1) Стягивает с сайта index.html, парсит DOM
@@ -109,7 +111,7 @@ paths:
     post:
       tags:
         - Http
-      summary: Добавить DOM-элементы в index.html
+      summary: Добавить элемент live-feed
       description: Добавляет новость в "Живую ленту" 
       operationId: feed_post
       produces:
@@ -146,6 +148,7 @@ paths:
     put:
       tags:
         - Http
+      summary: Обновить элемент live-feed
       description: Обновляет новость в "Живой ленте"
       operationId: feed_put
       produces:
@@ -186,6 +189,7 @@ paths:
     delete:
       tags:
         - Http
+      summary: Удалить элемент live-feed
       description: Обновляет новость в "Живой ленте"
       operationId: feed_del
       produces:
@@ -210,6 +214,81 @@ paths:
             $ref: '#/definitions/dummy'
         '202':
           description: feed not deleted
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    x-swagger-router-controller: Http
+
+  /http/price:
+    get:
+      tags:
+        - Http
+      summary: Получить цену на устройство
+      description: |
+        1) Стягивает с сайта index.html, парсит DOM
+        2) Отдает цены
+      operationId: http_price_get
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: device
+          in: query
+          required: true
+          type: string
+          description: условное название устройства
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/http_price_get'
+        '202':
+          description: no device
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Http
+    put:
+      tags:
+        - Http
+      summary: Обновить элемент live-feed
+      description: Обновляет новость в "Живой ленте"
+      operationId: http_price_put
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/http_price_get'
+      responses:
+        '200':
+          description: price updated
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: price not updated
           schema:
             $ref: '#/definitions/dummy'
         default:
@@ -294,6 +373,147 @@ paths:
       x-swagger-router-controller: Img
     x-swagger-router-controller: Img
 
+  /script/addr:
+    get:
+      tags:
+        - Script
+      summary: Получить список Населенных пунктов
+      description: |
+        Выдает города и улицы
+      operationId: script_addr_get
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/script_addr_get'
+        '202':
+          description: no list
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    post:
+      tags:
+        - Script
+      summary: Добавить Населенный пункт
+      description: |
+        Заливает картинку на сайт 
+      operationId: script_addr_post
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/script_addr_add'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: Addresses not uploaded
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    put:
+      tags:
+        - Script
+      summary: Изменить Населенный пункт
+      description: |
+        Заливает картинку на сайт 
+      operationId: script_addr_put
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/script_addr_add'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: Addresses not uploaded
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    delete:
+      tags:
+        - Script
+      summary: Удалить Населенный пункт
+      description: Удаляет Населенный пункт
+      operationId: script_addr_del
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          description: token
+          required: true
+          type: string
+        - name: city
+          in: query
+          required: true
+          type: string
+          description: Название Населенного пункта
+      responses:
+        '200':
+          description: address deleted
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: address not deleted
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    x-swagger-router-controller: Script
+
 ################################################################################
 #                                 Definitions                                  #
 ################################################################################
@@ -354,6 +574,37 @@ definitions:
     items:
       type: string
 
+# script_addr_get ===============================================================
+  script_addr_get:
+    type: array
+    items:
+      type: object
+      properties:
+        city:
+          type: string
+        street_arr:
+          type: array
+          items:
+            type: string
+
+  script_addr_add:
+    type: object
+    properties:
+      city:
+        type: string
+      street_arr:
+        type: array
+        items:
+          type: string
+
+# http_price_get ===============================================================
+  http_price_get:
+    type: object
+    properties:
+      device:
+        type: string
+      price:
+        type: integer
 
 # System =======================================================================
   errorModel:
