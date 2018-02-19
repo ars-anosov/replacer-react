@@ -9,7 +9,8 @@ info:
   contact:
     email: ars.anosov@gmail.com
   description: |
-    Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio).
+    - Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio)
+    - Меняет JavaScript файлы с настройками (var = ...)
 
 ################################################################################
 #                  Host, Base Path, Schemes and Content Types                  #
@@ -190,7 +191,7 @@ paths:
       tags:
         - Http
       summary: Удалить элемент live-feed
-      description: Обновляет новость в "Живой ленте"
+      description: Удаляет новость в "Живой ленте"
       operationId: feed_del
       produces:
         - application/json
@@ -265,7 +266,7 @@ paths:
       tags:
         - Http
       summary: Обновить элемент live-feed
-      description: Обновляет новость в "Живой ленте"
+      description: Обновляет цену устройства
       operationId: http_price_put
       produces:
         - application/json
@@ -410,7 +411,7 @@ paths:
         - Script
       summary: Добавить Населенный пункт
       description: |
-        Заливает картинку на сайт 
+        Добавляет Населенный пункт 
       operationId: script_addr_post
       produces:
         - application/json
@@ -446,7 +447,7 @@ paths:
         - Script
       summary: Изменить Населенный пункт
       description: |
-        Заливает картинку на сайт 
+        Изменяет Населенный пункт 
       operationId: script_addr_put
       produces:
         - application/json
