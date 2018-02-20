@@ -89,7 +89,7 @@ export class ScriptAddr extends React.Component {
     console.log('ScriptAddr render')
 
     var finalTemplate =
-    <div className='live-feed-win'>
+    <div className='std-win'>
       <div className='std-item-header' onClick={this.handleClkShowResult}>{this.props.headerTxt}</div>
 
       <div className={this.state.showResult ? '' : 'display-none'}>

@@ -40,8 +40,7 @@ exports.apiAction = function(req, res, next) {
 '\n\t\t\t\t\t\t\t\t</div>'+
 '\n\t\t\t\t\t\t\t\t<span class="lf-item__link link">Узнать больше</span>'+
 '\n\t\t\t\t\t\t\t</div>'+
-'\n\t\t\t\t\t\t</div>'+
-'\n'
+'\n\t\t\t\t\t\t</div>'
 
       // Добавляю новый itemStr
       $('.lf-items').prepend(itemStr)
@@ -57,8 +56,7 @@ exports.apiAction = function(req, res, next) {
 body.long_content+
 '\n\t\t\t\t\t</p>'+
 '\n\t\t\t\t</div>'+
-'\n\t\t\t</div>'+
-'\n'
+'\n\t\t\t</div>'
       
       // Сдвигаю id предыдущих элементов +1
       $('.article').map((i, row) => {

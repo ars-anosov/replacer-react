@@ -3,6 +3,9 @@
 @import "templates/Header";
 @import "templates/Footer";
 @import "templates/LiveFeed";
+@import "templates/ScriptAddr";
+@import "templates/ScriptSum";
+@import "templates/Price";
 
 body {
   background-color: #fff;
@@ -122,19 +125,18 @@ strong {
 
 .std-win {
   background: #fff;
-  border: 1px solid #999;
+  border: 2px solid #ddd;
   border-radius: 6px;
   margin: 2px;
-  padding: 2px;
+  padding: 0px;
   float: left;
 }
-
 .std-item {
   background: #fff;
   border: #ddd 1px solid;
   border-radius: 6px;
-  margin: 2px;
-  padding: 2px;
+  margin: 2px 0px;
+  padding: 0px;
 }
 .std-item-header {
   background: #eee;
@@ -172,6 +174,10 @@ strong {
   padding: 2px;
   font-size: 13px;
   cursor: pointer;
+}
+.std-item-menu {
+  margin: 2px 0px;
+  padding: 2px;
 }
 
 .std-bttn {

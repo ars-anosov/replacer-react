@@ -102,7 +102,7 @@ export class ImgFolder extends React.Component {
     console.log('ImgFolder render')
 
     var finalTemplate =
-    <div className='live-feed-win'>
+    <div className='std-win'>
       <div className='std-item-header' onClick={this.handleClkShowResult}>{this.props.headerTxt}</div>
 
       <div className={this.state.showResult ? '' : 'display-none'}>

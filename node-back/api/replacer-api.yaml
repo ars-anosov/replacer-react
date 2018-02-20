@@ -515,6 +515,76 @@ paths:
       x-swagger-router-controller: Script
     x-swagger-router-controller: Script
 
+  /script/sum:
+    get:
+      tags:
+        - Script
+      summary: Получить тарифы
+      description: |
+        Выдает тарифы
+      operationId: script_sum_get
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/script_sum_get'
+        '202':
+          description: no list
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    put:
+      tags:
+        - Script
+      summary: Заменить тарифы
+      description: |
+        Изменяет тарифы
+      operationId: script_sum_put
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/script_sum_get'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: tarif not uploaded
+          schema:
+            $ref: '#/definitions/dummy'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Script
+    x-swagger-router-controller: Script
+
 ################################################################################
 #                                 Definitions                                  #
 ################################################################################
@@ -597,6 +667,15 @@ definitions:
         type: array
         items:
           type: string
+
+# script_sum_get ===============================================================
+  script_sum_get:
+    type: object
+    properties:
+      noLimit:
+        type: integer
+      limit:
+        type: integer
 
 # http_price_get ===============================================================
   http_price_get:

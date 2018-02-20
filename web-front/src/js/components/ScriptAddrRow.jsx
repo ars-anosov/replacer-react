@@ -123,13 +123,13 @@ export default class ScriptAddrRow extends React.Component {
     if (this.props.idx === 0) { rowColor = 'std-item-header-small-green' }
 
     finalTemplate =
-    <div className='live-feed-item'>
+    <div className='std-item'>
       <div className={rowColor} onClick={this.handleClkShowResult}>
         {this.state.city}
       </div>
-      <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
-        <input id={this.props.idx+'-city'} className={this.props.idx === 0 ? 'live-feed-input' : 'display-none'} type='text' value={this.state.city} onChange={this.handleChangeTextNotes} /><br />
-        Улицы:<br /><textarea id={this.props.idx+'-streetsTxt'} className='live-feed-textarea' value={this.state.streetsTxt} onChange={this.handleChangeTextNotes}></textarea><br />
+      <div className={this.state.showResult ? 'std-item-menu' : 'display-none'}>
+        <input id={this.props.idx+'-city'} className={this.props.idx === 0 ? 'script-addr-input' : 'display-none'} type='text' value={this.state.city} onChange={this.handleChangeTextNotes} /><br />
+        Улицы:<br /><textarea id={this.props.idx+'-streetsTxt'} className='script-addr-textarea' value={this.state.streetsTxt} onChange={this.handleChangeTextNotes}></textarea><br />
         
         <button className={this.props.idx > 0 ? 'del-bttn' : 'display-none'} onClick={this.handleClkAction} value='del'>Удалить</button>&nbsp;
         <button className={this.props.idx > 0 ? this.state.modBttnClass : 'display-none'} onClick={this.handleClkAction} value='mod'>Изменить</button>

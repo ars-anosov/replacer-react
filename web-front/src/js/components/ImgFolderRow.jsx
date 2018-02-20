@@ -36,11 +36,11 @@ export default class ImgFolderRow extends React.Component {
     const liveUrl = window.localStorage.getItem('liveUrl')  // Выставляется в самом начале в index.html
 
     finalTemplate =
-    <div className='live-feed-item'>
+    <div className='std-item'>
       <div className='std-item-header-small' onClick={this.handleClkShowResult}>
         {row}
       </div>
-      <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
+      <div className={this.state.showResult ? 'std-item-menu' : 'display-none'}>
         <img src={liveUrl+'assets/images/'+row}></img><br />
       </div>
     </div>

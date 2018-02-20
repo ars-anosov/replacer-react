@@ -83,18 +83,33 @@ export default class PriceRow extends React.Component {
 
     var deviceNormalName = ''
     switch (this.state.device) {
+      case 'tv':
+        deviceNormalName = 'Цифровое телевидение / месяц'
+        break
       case 'tv-1':
         deviceNormalName = 'ТВ-приемник'
+        break
+      case 'wi-fi-1':
+        deviceNormalName = 'Wi-Fi для 1 ком.кв'
+        break
+      case 'wi-fi-2':
+        deviceNormalName = 'Wi-Fi для 2+ ком.кв'
+        break
+      case 'wi-fi-3':
+        deviceNormalName = 'Настройка Wi-Fi'
+        break
+      default:
+        deviceNormalName = this.state.device
         break
     }
 
     finalTemplate =
-    <div className='live-feed-item'>
+    <div className='std-item'>
       <div className='std-item-header-small' onClick={this.handleClkShowResult}>
         {deviceNormalName}
       </div>
-      <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
-        Цена: <input id={this.props.idx+'-price'} className='live-feed-input' type='text' value={this.state.price} onChange={this.handleChangeTextNotes} /><br />
+      <div className={this.state.showResult ? 'std-item-menu' : 'display-none'}>
+        Цена: <input id={this.props.idx+'-price'} className='price-input' type='text' value={this.state.price} onChange={this.handleChangeTextNotes} /><br />
         
         <button className={this.props.idx > 0 ? this.state.modBttnClass : 'display-none'} onClick={this.handleClkAction} value='mod'>Изменить</button>
         <button className={this.props.idx > 0 ? 'display-none' : 'add-bttn'} onClick={this.handleClkAction} value='add'>Добавить</button>

@@ -28,14 +28,64 @@ exports.apiAction = function(req, res, next) {
 
       var writeFlag = false
       switch (device) {
-        case 'tv-1':
-          // white
-          $('.tv-1').attr('data-tv-1-sum', price)
-          $('.tv-1 > p > .o-items__sum').text('+ '+price+' &#8381')
 
-          // black
+        case 'tv':
+          
+          $('.option > .option__content > .option__items__wrap > .o-items > .o-items__product-1').map((i, row) => {
+            $(row).attr('data-tv', price)
+          })
+          
+          $('.option > .option__content > .option__items__wrap > .o-items > .o-items__product-1 > p > .o-items__sum').map((i, row) => {
+            $(row).text('+ '+price+' &#8381;')
+          })
+
+          writeFlag = true
+          break
+
+        case 'tv-1':
+          // nolimit (белая)
+          $('.tv-1').attr('data-tv-1-sum', price)
+          $('.tv-1 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          // limit (черная)
           $('.tv-l-1').attr('data-tv-l-1-sum', price)
-          $('.tv-l-1 > p > .o-items__sum').text('+ '+price+' &#8381')
+          $('.tv-l-1 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          writeFlag = true
+          break
+
+        case 'wi-fi-1':
+          // nolimit (белая)
+          $('.wi-fi-1').attr('data-wi-fi-1-sum', price)
+          $('.wi-fi-1 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          // limit (черная)
+          $('.wi-fi-l-1').attr('data-wi-fi-l-1-sum', price)
+          $('.wi-fi-l-1 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          writeFlag = true
+          break
+
+        case 'wi-fi-2':
+          // nolimit (белая)
+          $('.wi-fi-2').attr('data-wi-fi-2-sum', price)
+          $('.wi-fi-2 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          // limit (черная)
+          $('.wi-fi-l-2').attr('data-wi-fi-l-2-sum', price)
+          $('.wi-fi-l-2 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          writeFlag = true
+          break
+
+        case 'wi-fi-3':
+          // nolimit (белая)
+          $('.wi-fi-3').attr('data-wi-fi-3-sum', price)
+          $('.wi-fi-3 > p > .o-items__sum').text('+ '+price+' &#8381;')
+
+          // limit (черная)
+          $('.wi-fi-l-3').attr('data-wi-fi-l-3-sum', price)
+          $('.wi-fi-l-3 > p > .o-items__sum').text('+ '+price+' &#8381;')
 
           writeFlag = true
           break

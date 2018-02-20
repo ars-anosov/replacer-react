@@ -24,6 +24,30 @@ export class Price extends React.Component {
     this.getData = () => {
       var apiResultTemplate = []
 
+
+
+      this.props.swgClient.apis.Http[this.apiCmd.get]({
+        token: this.apiCmd.token,
+        device: 'tv'
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+        }
+        else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
+        }
+
+        this.setState({apiResult: apiResultTemplate, showResult: true})
+      })
+      .catch((err) => {
+        // err
+      })
+
+
+
       this.props.swgClient.apis.Http[this.apiCmd.get]({
         token: this.apiCmd.token,
         device: 'tv-1'
@@ -43,6 +67,74 @@ export class Price extends React.Component {
       .catch((err) => {
         // err
       })
+
+
+
+      this.props.swgClient.apis.Http[this.apiCmd.get]({
+        token: this.apiCmd.token,
+        device: 'wi-fi-1'
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+        }
+        else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
+        }
+
+        this.setState({apiResult: apiResultTemplate, showResult: true})
+      })
+      .catch((err) => {
+        // err
+      })
+
+
+
+      this.props.swgClient.apis.Http[this.apiCmd.get]({
+        token: this.apiCmd.token,
+        device: 'wi-fi-2'
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+        }
+        else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
+        }
+
+        this.setState({apiResult: apiResultTemplate, showResult: true})
+      })
+      .catch((err) => {
+        // err
+      })
+
+
+
+      this.props.swgClient.apis.Http[this.apiCmd.get]({
+        token: this.apiCmd.token,
+        device: 'wi-fi-3'
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+        }
+        else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win')
+          }
+        }
+
+        this.setState({apiResult: apiResultTemplate, showResult: true})
+      })
+      .catch((err) => {
+        // err
+      })
+
+
     }
 
   }
@@ -71,7 +163,7 @@ export class Price extends React.Component {
     console.log('Price render')
 
     var finalTemplate =
-    <div className='live-feed-win'>
+    <div className='std-win'>
       <div className='std-item-header' onClick={this.handleClkShowResult}>{this.props.headerTxt}</div>
 
       <div className={this.state.showResult ? '' : 'display-none'}>
