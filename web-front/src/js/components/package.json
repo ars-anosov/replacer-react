@@ -1,6 +1,6 @@
 {
   "name": "replacer-react-component",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A package for index.html DOM-objects replacement by React components",
   "main": "dist/replacer-react-component.js",
   "scripts": {

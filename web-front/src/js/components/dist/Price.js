@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LiveFeed = undefined;
+exports.Price = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -13,9 +13,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LiveFeedRow = require('./LiveFeedRow');
+var _PriceRow = require('./PriceRow');
 
-var _LiveFeedRow2 = _interopRequireDefault(_LiveFeedRow);
+var _PriceRow2 = _interopRequireDefault(_PriceRow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,15 +25,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LiveFeed = exports.LiveFeed = function (_React$Component) {
-  _inherits(LiveFeed, _React$Component);
+var Price = exports.Price = function (_React$Component) {
+  _inherits(Price, _React$Component);
 
-  function LiveFeed(args) {
-    _classCallCheck(this, LiveFeed);
+  function Price(args) {
+    _classCallCheck(this, Price);
 
     // наполняю this от Page
 
-    var _this = _possibleConstructorReturn(this, (LiveFeed.__proto__ || Object.getPrototypeOf(LiveFeed)).call(this, args));
+    var _this = _possibleConstructorReturn(this, (Price.__proto__ || Object.getPrototypeOf(Price)).call(this, args));
 
     _this.state = {
       showResult: false,
@@ -44,34 +44,87 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
 
     _this.apiCmd = {
       token: window.localStorage.getItem('token'),
-      get: 'feed_get',
-      post: 'feed_post',
-      put: 'feed_put',
-      del: 'feed_del',
-      imglist_get: 'img_get'
+      get: 'http_price_get',
+      put: 'http_price_put'
 
       //console.log(this.props.swgClient)
-    };_this.getFeeds = function () {
+    };_this.getData = function () {
       var apiResultTemplate = [];
 
-      var row_new = {
-        "checkbox": false,
-        "short_title": "Новая запись в живой ленте",
-        "short_img": "assets/images/lf-item-img-2.png",
-        "short_comments": "Короткий текст новой новости...",
-        "long_title": "Новая запись в живой ленте (всплывашка)",
-        "long_date": "00.00.2000",
-        "long_img": "assets/images/lf-item-img-2.png",
-        "long_content": "Длинный текст новой новости..."
-      };
-      apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row_new, idx: 0, key: 0 })));
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({ token: _this.apiCmd.token }).then(function (res) {
-
+      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
+        token: _this.apiCmd.token,
+        device: 'tv'
+      }).then(function (res) {
         if (res.status === 200) {
-          res.body.map(function (row, i) {
-            apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
-          });
+          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
+        } else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win');
+          }
+        }
+
+        _this.setState({ apiResult: apiResultTemplate, showResult: true });
+      }).catch(function (err) {
+        // err
+      });
+
+      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
+        token: _this.apiCmd.token,
+        device: 'tv-1'
+      }).then(function (res) {
+        if (res.status === 200) {
+          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
+        } else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win');
+          }
+        }
+
+        _this.setState({ apiResult: apiResultTemplate, showResult: true });
+      }).catch(function (err) {
+        // err
+      });
+
+      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
+        token: _this.apiCmd.token,
+        device: 'wi-fi-1'
+      }).then(function (res) {
+        if (res.status === 200) {
+          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
+        } else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win');
+          }
+        }
+
+        _this.setState({ apiResult: apiResultTemplate, showResult: true });
+      }).catch(function (err) {
+        // err
+      });
+
+      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
+        token: _this.apiCmd.token,
+        device: 'wi-fi-2'
+      }).then(function (res) {
+        if (res.status === 200) {
+          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
+        } else {
+          if (res.body.message === 'token Unauthorized') {
+            document.getElementById('auth-win').setAttribute('class', 'auth-win');
+          }
+        }
+
+        _this.setState({ apiResult: apiResultTemplate, showResult: true });
+      }).catch(function (err) {
+        // err
+      });
+
+      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
+        token: _this.apiCmd.token,
+        device: 'wi-fi-3'
+      }).then(function (res) {
+        if (res.status === 200) {
+          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
         } else {
           if (res.body.message === 'token Unauthorized') {
             document.getElementById('auth-win').setAttribute('class', 'auth-win');
@@ -83,16 +136,17 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
         // err
       });
     };
+
     return _this;
   }
 
-  _createClass(LiveFeed, [{
+  _createClass(Price, [{
     key: 'handleClkShowResult',
     value: function handleClkShowResult(event) {
       // Если результат скрыт, запрашиваем заново.
       if (!this.state.showResult) {
         this.setState({ apiResult: null });
-        this.getFeeds();
+        this.getData();
       }
 
       this.setState({ showResult: !this.state.showResult });
@@ -100,11 +154,11 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('LiveFeed render');
+      console.log('Price render');
 
       var finalTemplate = _react2.default.createElement(
         'div',
-        { className: 'live-feed-win' },
+        { className: 'std-win' },
         _react2.default.createElement(
           'div',
           { className: 'std-item-header', onClick: this.handleClkShowResult },
@@ -121,5 +175,5 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     }
   }]);
 
-  return LiveFeed;
+  return Price;
 }(_react2.default.Component);

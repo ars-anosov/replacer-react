@@ -3,19 +3,13 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LiveFeed = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+exports.ScriptSum = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _LiveFeedRow = require('./LiveFeedRow');
-
-var _LiveFeedRow2 = _interopRequireDefault(_LiveFeedRow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,86 +19,111 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LiveFeed = exports.LiveFeed = function (_React$Component) {
-  _inherits(LiveFeed, _React$Component);
+var ScriptSum = exports.ScriptSum = function (_React$Component) {
+  _inherits(ScriptSum, _React$Component);
 
-  function LiveFeed(args) {
-    _classCallCheck(this, LiveFeed);
+  function ScriptSum(args) {
+    _classCallCheck(this, ScriptSum);
 
     // наполняю this от Page
 
-    var _this = _possibleConstructorReturn(this, (LiveFeed.__proto__ || Object.getPrototypeOf(LiveFeed)).call(this, args));
+    var _this = _possibleConstructorReturn(this, (ScriptSum.__proto__ || Object.getPrototypeOf(ScriptSum)).call(this, args));
 
     _this.state = {
       showResult: false,
-      apiResult: null
+      apiResult: null,
+      modBttnClass: 'gray-bttn',
+      noLimit: 0,
+      limit: 0
     };
 
     _this.handleClkShowResult = _this.handleClkShowResult.bind(_this);
+    _this.handleChangeTextNotes = _this.handleChangeTextNotes.bind(_this);
+    _this.handleClkAction = _this.handleClkAction.bind(_this);
 
     _this.apiCmd = {
       token: window.localStorage.getItem('token'),
-      get: 'feed_get',
-      post: 'feed_post',
-      put: 'feed_put',
-      del: 'feed_del',
-      imglist_get: 'img_get'
+      get: 'script_sum_get',
+      put: 'script_sum_put'
 
       //console.log(this.props.swgClient)
-    };_this.getFeeds = function () {
+    };_this.getData = function () {
       var apiResultTemplate = [];
 
-      var row_new = {
-        "checkbox": false,
-        "short_title": "Новая запись в живой ленте",
-        "short_img": "assets/images/lf-item-img-2.png",
-        "short_comments": "Короткий текст новой новости...",
-        "long_title": "Новая запись в живой ленте (всплывашка)",
-        "long_date": "00.00.2000",
-        "long_img": "assets/images/lf-item-img-2.png",
-        "long_content": "Длинный текст новой новости..."
-      };
-      apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row_new, idx: 0, key: 0 })));
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({ token: _this.apiCmd.token }).then(function (res) {
+      _this.props.swgClient.apis.Script[_this.apiCmd.get]({
+        token: _this.apiCmd.token
+      }).then(function (res) {
 
         if (res.status === 200) {
-          res.body.map(function (row, i) {
-            apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
-          });
+          _this.setState({ noLimit: res.body.noLimit, limit: res.body.limit, showResult: true });
         } else {
           if (res.body.message === 'token Unauthorized') {
             document.getElementById('auth-win').setAttribute('class', 'auth-win');
           }
         }
-
-        _this.setState({ apiResult: apiResultTemplate, showResult: true });
       }).catch(function (err) {
         // err
       });
     };
+
     return _this;
   }
 
-  _createClass(LiveFeed, [{
+  _createClass(ScriptSum, [{
     key: 'handleClkShowResult',
     value: function handleClkShowResult(event) {
       // Если результат скрыт, запрашиваем заново.
       if (!this.state.showResult) {
         this.setState({ apiResult: null });
-        this.getFeeds();
+        this.getData();
       }
 
       this.setState({ showResult: !this.state.showResult });
     }
   }, {
+    key: 'handleChangeTextNotes',
+    value: function handleChangeTextNotes(event) {
+      var spltId = event.target.id.split('-');
+      switch (spltId[1]) {
+        case 'noLimit':
+          this.setState({ noLimit: event.target.value });
+          break;
+        case 'limit':
+          this.setState({ limit: event.target.value });
+          break;
+      }
+
+      this.setState({ modBttnClass: 'mod-bttn' });
+      //this.setState({event.target.id: event.target.value})
+    }
+  }, {
+    key: 'handleClkAction',
+    value: function handleClkAction(event) {
+      var _this2 = this;
+
+      switch (true) {
+
+        case event.target.value === 'mod':
+          this.props.swgClient.apis.Script[this.apiCmd.put]({
+            token: this.apiCmd.token,
+            body: {
+              noLimit: parseInt(this.state.noLimit),
+              limit: parseInt(this.state.limit)
+            }
+          }).then(function (res) {
+            _this2.setState({ modBttnClass: 'gray-bttn' });
+          });
+          break;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
-      console.log('LiveFeed render');
+      console.log('ScriptSum render');
 
       var finalTemplate = _react2.default.createElement(
         'div',
-        { className: 'live-feed-win' },
+        { className: 'std-win' },
         _react2.default.createElement(
           'div',
           { className: 'std-item-header', onClick: this.handleClkShowResult },
@@ -113,7 +132,19 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: this.state.showResult ? '' : 'display-none' },
-          this.state.apiResult
+          '\u0411\u0435\u0437 \u043E\u0433\u0440\u0430\u043D\u0438\u0447\u0435\u043D\u0438\u0439:',
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('input', { id: '1-noLimit', className: 'script-sum-input', type: 'text', value: this.state.noLimit, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('br', null),
+          '\u041E\u0433\u0440\u0430\u043D\u0438\u0447\u0435\u043D\u044B\u0439:',
+          _react2.default.createElement('br', null),
+          _react2.default.createElement('input', { id: '1-limit', className: 'script-sum-input', type: 'text', value: this.state.limit, onChange: this.handleChangeTextNotes }),
+          _react2.default.createElement('br', null),
+          _react2.default.createElement(
+            'button',
+            { className: this.state.modBttnClass, onClick: this.handleClkAction, value: 'mod' },
+            '\u0418\u0437\u043C\u0435\u043D\u0438\u0442\u044C'
+          )
         )
       );
 
@@ -121,5 +152,5 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     }
   }]);
 
-  return LiveFeed;
+  return ScriptSum;
 }(_react2.default.Component);

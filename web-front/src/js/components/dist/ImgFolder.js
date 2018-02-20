@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LiveFeed = undefined;
+exports.ImgFolder = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -13,9 +13,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LiveFeedRow = require('./LiveFeedRow');
+var _ImgFolderRow = require('./ImgFolderRow');
 
-var _LiveFeedRow2 = _interopRequireDefault(_LiveFeedRow);
+var _ImgFolderRow2 = _interopRequireDefault(_ImgFolderRow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,15 +25,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LiveFeed = exports.LiveFeed = function (_React$Component) {
-  _inherits(LiveFeed, _React$Component);
+var ImgFolder = exports.ImgFolder = function (_React$Component) {
+  _inherits(ImgFolder, _React$Component);
 
-  function LiveFeed(args) {
-    _classCallCheck(this, LiveFeed);
+  function ImgFolder(args) {
+    _classCallCheck(this, ImgFolder);
 
     // наполняю this от Page
 
-    var _this = _possibleConstructorReturn(this, (LiveFeed.__proto__ || Object.getPrototypeOf(LiveFeed)).call(this, args));
+    var _this = _possibleConstructorReturn(this, (ImgFolder.__proto__ || Object.getPrototypeOf(ImgFolder)).call(this, args));
 
     _this.state = {
       showResult: false,
@@ -41,36 +41,27 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     };
 
     _this.handleClkShowResult = _this.handleClkShowResult.bind(_this);
+    _this.handleChangeInput = _this.handleChangeInput.bind(_this);
 
     _this.apiCmd = {
       token: window.localStorage.getItem('token'),
-      get: 'feed_get',
-      post: 'feed_post',
-      put: 'feed_put',
-      del: 'feed_del',
-      imglist_get: 'img_get'
+      get: 'img_get',
+      post: 'img_post'
 
       //console.log(this.props.swgClient)
-    };_this.getFeeds = function () {
+    };_this.getImages = function () {
       var apiResultTemplate = [];
 
-      var row_new = {
-        "checkbox": false,
-        "short_title": "Новая запись в живой ленте",
-        "short_img": "assets/images/lf-item-img-2.png",
-        "short_comments": "Короткий текст новой новости...",
-        "long_title": "Новая запись в живой ленте (всплывашка)",
-        "long_date": "00.00.2000",
-        "long_img": "assets/images/lf-item-img-2.png",
-        "long_content": "Длинный текст новой новости..."
-      };
-      apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row_new, idx: 0, key: 0 })));
+      //var row_new = 'new.png'
+      //apiResultTemplate.push(<ImgFolderRow {...{Win: this}} row={row_new} idx={0} key={0} />)
 
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({ token: _this.apiCmd.token }).then(function (res) {
+      _this.props.swgClient.apis.Img[_this.apiCmd.get]({
+        token: _this.apiCmd.token
+      }).then(function (res) {
 
         if (res.status === 200) {
           res.body.map(function (row, i) {
-            apiResultTemplate.push(_react2.default.createElement(_LiveFeedRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
+            apiResultTemplate.push(_react2.default.createElement(_ImgFolderRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
           });
         } else {
           if (res.body.message === 'token Unauthorized') {
@@ -86,25 +77,51 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     return _this;
   }
 
-  _createClass(LiveFeed, [{
+  _createClass(ImgFolder, [{
     key: 'handleClkShowResult',
     value: function handleClkShowResult(event) {
       // Если результат скрыт, запрашиваем заново.
       if (!this.state.showResult) {
         this.setState({ apiResult: null });
-        this.getFeeds();
+        this.getImages();
       }
 
       this.setState({ showResult: !this.state.showResult });
     }
   }, {
+    key: 'handleChangeInput',
+    value: function handleChangeInput(event) {
+      var _this2 = this;
+
+      switch (event.target.id) {
+        case 'imgFile':
+
+          this.props.swgClient.apis.Img[this.apiCmd.post]({
+            token: this.apiCmd.token,
+            file: event.target.files[0]
+          }).then(function (res) {
+            if (res.status === 200) {
+              _this2.setState({ apiResult: null, showResult: true });
+              _this2.getImages();
+            } else {
+              alert(res.body.message);
+              console.log(res.body);
+            }
+          }).catch(function (err) {
+            //console.log(err)
+          });
+
+          break;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
-      console.log('LiveFeed render');
+      console.log('ImgFolder render');
 
       var finalTemplate = _react2.default.createElement(
         'div',
-        { className: 'live-feed-win' },
+        { className: 'std-win' },
         _react2.default.createElement(
           'div',
           { className: 'std-item-header', onClick: this.handleClkShowResult },
@@ -113,6 +130,7 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: this.state.showResult ? '' : 'display-none' },
+          _react2.default.createElement('input', { className: 'std-item-header-small-green', id: 'imgFile', type: 'file', onChange: this.handleChangeInput }),
           this.state.apiResult
         )
       );
@@ -121,5 +139,5 @@ var LiveFeed = exports.LiveFeed = function (_React$Component) {
     }
   }]);
 
-  return LiveFeed;
+  return ImgFolder;
 }(_react2.default.Component);
