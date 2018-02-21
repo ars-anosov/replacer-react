@@ -54,7 +54,7 @@ export class Price extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={2} key={2} />)
         }
         else {
           if (res.body.message === 'token Unauthorized') {
@@ -76,7 +76,7 @@ export class Price extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={3} key={3} />)
         }
         else {
           if (res.body.message === 'token Unauthorized') {
@@ -98,7 +98,7 @@ export class Price extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={4} key={4} />)
         }
         else {
           if (res.body.message === 'token Unauthorized') {
@@ -120,7 +120,7 @@ export class Price extends React.Component {
       })
       .then((res) => {
         if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={5} key={5} />)
         }
         else {
           if (res.body.message === 'token Unauthorized') {

@@ -228,7 +228,7 @@ export default class LiveFeedRow extends React.Component {
       </div>
       <div className={this.state.showResult ? 'live-feed-item-menu' : 'display-none'}>
         <input id={this.props.idx+'-checkbox'} className='checkbox-big' type='checkbox' checked={this.state.checkbox} onChange={this.handleChangeTextNotes} /><br />
-        <img src={liveUrl+'/'+this.state.short_img}></img><br />
+        <img src={liveUrl+'/'+this.state.short_img} border='1'></img><br />
         <select id={this.props.idx+'-imgListSelected'} size='1' value={this.state.imgListSelected} onChange={this.handleChangeTextNotes}>
           {
             this.state.imgList.map((row,i) =>
