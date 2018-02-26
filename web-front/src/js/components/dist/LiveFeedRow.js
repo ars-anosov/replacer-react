@@ -251,7 +251,7 @@ var LiveFeedRow = function (_React$Component) {
           { className: this.state.showResult ? 'live-feed-item-menu' : 'display-none' },
           _react2.default.createElement('input', { id: this.props.idx + '-checkbox', className: 'checkbox-big', type: 'checkbox', checked: this.state.checkbox, onChange: this.handleChangeTextNotes }),
           _react2.default.createElement('br', null),
-          _react2.default.createElement('img', { src: liveUrl + '/' + this.state.short_img }),
+          _react2.default.createElement('img', { src: liveUrl + '/' + this.state.short_img, border: '1' }),
           _react2.default.createElement('br', null),
           _react2.default.createElement(
             'select',

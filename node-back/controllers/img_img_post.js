@@ -20,7 +20,7 @@ exports.apiAction = function(req, res, next) {
   if (args.file.value.mimetype === 'image/png' || args.file.value.mimetype === 'image/jpeg') {
       let dimensions = sizeOf(args.file.value.buffer)
     // Только подходящий размер
-    if (dimensions.width >= 330 && dimensions.width <= 350 && dimensions.height >= 194 && dimensions.height <= 205) {
+    if (dimensions.width >= 330 && dimensions.width <= 700 && dimensions.height >= 194 && dimensions.height <= 400) {
       var localDstFilePath = path.join(__dirname,'../static_result/img/'+args.file.value.originalname)
 
       fs.writeFile(localDstFilePath, args.file.value.buffer, 'ascii', function(err) {

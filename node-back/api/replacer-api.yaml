@@ -243,11 +243,6 @@ paths:
           required: true
           type: string
           description: token
-        - name: device
-          in: query
-          required: true
-          type: string
-          description: условное название устройства
       responses:
         '200':
           description: Ok
@@ -282,7 +277,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/http_price_get'
+            $ref: '#/definitions/http_price_put'
       responses:
         '200':
           description: price updated
@@ -679,6 +674,18 @@ definitions:
 
 # http_price_get ===============================================================
   http_price_get:
+    type: array
+    items:
+      type: object
+      properties:
+        device:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+
+  http_price_put:
     type: object
     properties:
       device:

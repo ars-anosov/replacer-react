@@ -25,9 +25,9 @@ sudo docker run \
   -v $PWD:/replacer-reactor-node \
   -w /replacer-reactor-node \
   --publish=8008:8008 \
-  --env="HTTP_URL=http://192.168.16.12/domolain/test/" \
+  --env="HTTP_URL=http://192.168.16.12/domolain" \
   --env="SFTP_HOST=192.168.28.18" \
-  --env="SFTP_PATH=/docker_vol/nginx-html/domolain/test" \
+  --env="SFTP_PATH=/docker_vol/nginx-html/domolain" \
   --env="SFTP_USER=INSERT_HERE_USERNAME" \
   --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
   -it \

@@ -2,16 +2,21 @@
 
 
 ## Обзор
-Меняет DOM-элементы сайта. Использует движок [cheerio](https://github.com/cheeriojs/cheerio).
+Админка для [домонлайн.рф](http://xn--80ahqgegdcb.xn--p1ai/). Меняет DOM-элементы "живого" сайта.
 
+![Image](https://github.com/ars-anosov/replacer-react/blob/master/images/drawio_main.png)
+
+1. Стягиваем HTML-код с помощью [request](https://github.com/request/request)
+2. Парсим DOM с помощью [cheerio](https://github.com/cheeriojs/cheerio)
+3. Заливаем файлы на хостинг с помощью [ssh2](https://github.com/mscdex/ssh2)
 
 ## Установка / Использование
 
 ### Окружение
-Работал в седующем окружении:
-- **192.168.13.97** - Docker-контейнер с Node8. Backend **OpenAPI**
-- **192.168.28.18** - Машина с хостингом тестового сайта. Доступ по **SSH Path**: /docker_vol/nginx-html/domolain/test/
-- **192.168.16.12** - Сайт на который воздействуем. Доступен по **HTTP URL**: http://192.168.16.12/domolain/test/
+Тестовое окружение для разработки (для себя правим на нужные IP):
+- **192.168.13.97** - Docker-контейнер с Node8. Backend **OpenAPI** сервер
+- **192.168.28.18** - Машина с хостингом тестового сайта. Доступ по **SSH Path**: /docker_vol/nginx-html/domolain/
+- **192.168.16.12** - Сайт на который воздействуем. Доступен по **HTTP URL**: http://192.168.16.12/domolain/
 
 ### 1. Backend
 1. OpenAPI-сервер обрабатывает REST-запросы от Frontend
@@ -29,9 +34,9 @@ sudo docker build -t 'replacer-reactor-node:latest' github.com/ars-anosov/replac
 sudo docker run \
   --name replacer-reactor-node \
   --publish=8008:8008 \
-  --env="HTTP_URL=http://192.168.16.12/domolain/test" \
+  --env="HTTP_URL=http://192.168.16.12/domolain" \
   --env="SFTP_HOST=192.168.28.18" \
-  --env="SFTP_PATH=/docker_vol/nginx-html/domolain/test" \
+  --env="SFTP_PATH=/docker_vol/nginx-html/domolain" \
   --env="SFTP_USER=INSERT_HERE_USERNAME" \
   --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
   -it \
@@ -71,6 +76,6 @@ node index.js $HTTP_URL $SFTP_HOST $SFTP_PATH $SFTP_USER
 
 Правим [web-front/build/index.html](https://github.com/ars-anosov/replacer-react/blob/master/web-front/build/index.html):
 ``` js
-window.localStorage.setItem('liveUrl', 'http://192.168.16.12/domolain/test/')
+window.localStorage.setItem('liveUrl', 'http://192.168.16.12/domolain/')
 window.localStorage.setItem('specUrl', 'http://192.168.13.97:8008/spec/swagger.json')
 ```

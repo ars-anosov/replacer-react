@@ -9,7 +9,6 @@ exports.apiAction = function(req, res, next) {
 
   var request             = req.myObj.request.module
   var reqOptions          = {...req.myObj.request.reqOptions}
-  var device              = req.swagger.params.device.value
 
   reqOptions.url = reqOptions.url+'/index.html'
   request(reqOptions, function(requestErr, requestRes, requestBody) {
@@ -17,50 +16,41 @@ exports.apiAction = function(req, res, next) {
       //console.log(requestRes.statusCode)
       //console.log(requestBody)
 
-      var final = {'device': device}
+      var finalArr = []
+      var price = null
       var $ = cheerio.load(requestBody)
 
-      switch (device) {
-        case 'tv':
-          $('.option > .option__content > .option__items__wrap > .o-items > .o-items__product-1').map((i, row) => {
-            final.price = parseInt($(row).attr('data-tv'))
-          })
-          apiTools.apiResJson(res, final, 200)
-          break
+      // tv
+      $('.option > .option__content > .option__items__wrap > .o-items > .o-items__product-1').map((i, row) => {
+        price = parseInt($(row).attr('data-tv'))
+      })
+      finalArr.push({'device': 'tv', 'description': 'Цифровое телевидение / месяц', 'price': price})
 
-        case 'tv-1':
-          $('.tv-1').map((i, row) => {
-            final.price = parseInt($(row).attr('data-tv-1-sum'))
-          })
-          apiTools.apiResJson(res, final, 200)
-          break
+      // tv-1
+      $('.tv-1').map((i, row) => {
+        price = parseInt($(row).attr('data-tv-1-sum'))
+      })
+      finalArr.push({'device': 'tv-1', 'description': 'ТВ-приемник', 'price': price})
 
-        case 'wi-fi-1':
-          $('.wi-fi-1').map((i, row) => {
-            final.price = parseInt($(row).attr('data-wi-fi-1-sum'))
-          })
-          apiTools.apiResJson(res, final, 200)
-          break
+      // wi-fi-1
+      $('.wi-fi-1').map((i, row) => {
+        price = parseInt($(row).attr('data-wi-fi-1-sum'))
+      })
+      finalArr.push({'device': 'wi-fi-1', 'description': 'Wi-Fi для 1 ком.кв', 'price': price})
 
-        case 'wi-fi-2':
-          $('.wi-fi-2').map((i, row) => {
-            final.price = parseInt($(row).attr('data-wi-fi-2-sum'))
-          })
-          apiTools.apiResJson(res, final, 200)
-          break
+      // wi-fi-2
+      $('.wi-fi-2').map((i, row) => {
+        price = parseInt($(row).attr('data-wi-fi-2-sum'))
+      })
+      finalArr.push({'device': 'wi-fi-2', 'description': 'Wi-Fi для 2+ ком.кв', 'price': price})
 
-        case 'wi-fi-3':
-          $('.wi-fi-3').map((i, row) => {
-            final.price = parseInt($(row).attr('data-wi-fi-3-sum'))
-          })
-          apiTools.apiResJson(res, final, 200)
-          break
+      // wi-fi-3
+      $('.wi-fi-3').map((i, row) => {
+        price = parseInt($(row).attr('data-wi-fi-3-sum'))
+      })
+      finalArr.push({'device': 'wi-fi-3', 'description': 'Настройка Wi-Fi', 'price': price})
 
-        default:
-          apiTools.apiResJson(res, {code: 202, message: 'no device'}, 202)
-          break
-      }
-
+      apiTools.apiResJson(res, finalArr, 200)
     }
     else {
       apiTools.apiResJson(res, {code: 202, message: requestRes.statusCode}, 202)

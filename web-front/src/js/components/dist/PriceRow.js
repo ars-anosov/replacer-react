@@ -98,35 +98,13 @@ var PriceRow = function (_React$Component) {
       var finalTemplate = null;
       var row = this.props.row;
 
-      var deviceNormalName = '';
-      switch (this.state.device) {
-        case 'tv':
-          deviceNormalName = 'Цифровое телевидение / месяц';
-          break;
-        case 'tv-1':
-          deviceNormalName = 'ТВ-приемник';
-          break;
-        case 'wi-fi-1':
-          deviceNormalName = 'Wi-Fi для 1 ком.кв';
-          break;
-        case 'wi-fi-2':
-          deviceNormalName = 'Wi-Fi для 2+ ком.кв';
-          break;
-        case 'wi-fi-3':
-          deviceNormalName = 'Настройка Wi-Fi';
-          break;
-        default:
-          deviceNormalName = this.state.device;
-          break;
-      }
-
       finalTemplate = _react2.default.createElement(
         'div',
         { className: 'std-item' },
         _react2.default.createElement(
           'div',
           { className: 'std-item-header-small', onClick: this.handleClkShowResult },
-          deviceNormalName
+          row.description
         ),
         _react2.default.createElement(
           'div',

@@ -27,12 +27,14 @@ export class Price extends React.Component {
 
 
       this.props.swgClient.apis.Http[this.apiCmd.get]({
-        token: this.apiCmd.token,
-        device: 'tv'
+        token: this.apiCmd.token
       })
       .then((res) => {
+
         if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={1} key={1} />)
+          res.body.map( (row, i) => {
+            apiResultTemplate.push(<PriceRow {...{Win: this}} row={row} idx={i+1} key={i+1}/>)
+          })
         }
         else {
           if (res.body.message === 'token Unauthorized') {
@@ -45,95 +47,6 @@ export class Price extends React.Component {
       .catch((err) => {
         // err
       })
-
-
-
-      this.props.swgClient.apis.Http[this.apiCmd.get]({
-        token: this.apiCmd.token,
-        device: 'tv-1'
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={2} key={2} />)
-        }
-        else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win')
-          }
-        }
-
-        this.setState({apiResult: apiResultTemplate, showResult: true})
-      })
-      .catch((err) => {
-        // err
-      })
-
-
-
-      this.props.swgClient.apis.Http[this.apiCmd.get]({
-        token: this.apiCmd.token,
-        device: 'wi-fi-1'
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={3} key={3} />)
-        }
-        else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win')
-          }
-        }
-
-        this.setState({apiResult: apiResultTemplate, showResult: true})
-      })
-      .catch((err) => {
-        // err
-      })
-
-
-
-      this.props.swgClient.apis.Http[this.apiCmd.get]({
-        token: this.apiCmd.token,
-        device: 'wi-fi-2'
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={4} key={4} />)
-        }
-        else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win')
-          }
-        }
-
-        this.setState({apiResult: apiResultTemplate, showResult: true})
-      })
-      .catch((err) => {
-        // err
-      })
-
-
-
-      this.props.swgClient.apis.Http[this.apiCmd.get]({
-        token: this.apiCmd.token,
-        device: 'wi-fi-3'
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          apiResultTemplate.push(<PriceRow {...{Win: this}} row={res.body} idx={5} key={5} />)
-        }
-        else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win')
-          }
-        }
-
-        this.setState({apiResult: apiResultTemplate, showResult: true})
-      })
-      .catch((err) => {
-        // err
-      })
-
 
     }
 

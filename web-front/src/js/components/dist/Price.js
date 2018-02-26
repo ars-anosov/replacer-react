@@ -52,79 +52,13 @@ var Price = exports.Price = function (_React$Component) {
       var apiResultTemplate = [];
 
       _this.props.swgClient.apis.Http[_this.apiCmd.get]({
-        token: _this.apiCmd.token,
-        device: 'tv'
+        token: _this.apiCmd.token
       }).then(function (res) {
+
         if (res.status === 200) {
-          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
-        } else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win');
-          }
-        }
-
-        _this.setState({ apiResult: apiResultTemplate, showResult: true });
-      }).catch(function (err) {
-        // err
-      });
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
-        token: _this.apiCmd.token,
-        device: 'tv-1'
-      }).then(function (res) {
-        if (res.status === 200) {
-          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
-        } else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win');
-          }
-        }
-
-        _this.setState({ apiResult: apiResultTemplate, showResult: true });
-      }).catch(function (err) {
-        // err
-      });
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
-        token: _this.apiCmd.token,
-        device: 'wi-fi-1'
-      }).then(function (res) {
-        if (res.status === 200) {
-          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
-        } else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win');
-          }
-        }
-
-        _this.setState({ apiResult: apiResultTemplate, showResult: true });
-      }).catch(function (err) {
-        // err
-      });
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
-        token: _this.apiCmd.token,
-        device: 'wi-fi-2'
-      }).then(function (res) {
-        if (res.status === 200) {
-          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
-        } else {
-          if (res.body.message === 'token Unauthorized') {
-            document.getElementById('auth-win').setAttribute('class', 'auth-win');
-          }
-        }
-
-        _this.setState({ apiResult: apiResultTemplate, showResult: true });
-      }).catch(function (err) {
-        // err
-      });
-
-      _this.props.swgClient.apis.Http[_this.apiCmd.get]({
-        token: _this.apiCmd.token,
-        device: 'wi-fi-3'
-      }).then(function (res) {
-        if (res.status === 200) {
-          apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: res.body, idx: 1, key: 1 })));
+          res.body.map(function (row, i) {
+            apiResultTemplate.push(_react2.default.createElement(_PriceRow2.default, _extends({ Win: _this }, { row: row, idx: i + 1, key: i + 1 })));
+          });
         } else {
           if (res.body.message === 'token Unauthorized') {
             document.getElementById('auth-win').setAttribute('class', 'auth-win');

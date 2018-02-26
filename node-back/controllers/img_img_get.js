@@ -26,7 +26,7 @@ exports.apiAction = function(req, res, next) {
       if (row.match(/(png|jpg|jpeg)$/i)) {
         let dimensions = sizeOf(dirPath+row)
         // Выдаю только подходящие размеры
-        if (dimensions.width >= 330 && dimensions.width <= 350 && dimensions.height >= 194 && dimensions.height <= 205) {
+        if (dimensions.width >= 330 && dimensions.width <= 700 && dimensions.height >= 194 && dimensions.height <= 400) {
           finalResult.push(row)
         }
       }
