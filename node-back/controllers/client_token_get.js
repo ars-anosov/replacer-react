@@ -11,7 +11,11 @@ exports.apiAction = function(req, res, next) {
   // ----------------------------------------------------------------------------------
   // Здесь какая-нибудь процедура проверки достоверности "token" например в базе данных
   // ----------------------------------------------------------------------------------
-  if (args.auth_name.value === 'user' && args.auth_pass.value === 'test') {
+  if (
+    (args.auth_name.value === 'user' && args.auth_pass.value === 'test')
+    ||
+    (args.auth_name.value === 'user2' && args.auth_pass.value === 'test2')
+    ) {
     // клиент ввел правильный пароль
     var token_new  = apiTools.randWDclassic(30)
 

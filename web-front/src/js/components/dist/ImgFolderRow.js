@@ -68,7 +68,7 @@ var ImgFolderRow = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { className: this.state.showResult ? 'std-item-menu' : 'display-none' },
-          _react2.default.createElement('img', { src: liveUrl + 'assets/images/' + row }),
+          _react2.default.createElement('img', { src: liveUrl + '/assets/images/' + row }),
           _react2.default.createElement('br', null)
         )
       );

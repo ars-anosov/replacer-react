@@ -22,11 +22,17 @@ exports.checkAuth = function(req, res, next) {
     else {
       // У клиента есть token. Проверяю.
       
-      var tokenCheckResult = ''
+      var tokenCheckResult = false
       // ----------------------------------------------------------------------------------
       // Здесь какая-нибудь процедура проверки достоверности "token" например в базе данных
       // ----------------------------------------------------------------------------------
-      if (args.token.value === req.myObj.aaa['user']) { tokenCheckResult = 'pass' }
+
+      // Пока просто перебираю пользователей в req.myObj.aaa (который заполнен контроллером get_token)
+      for (var key in req.myObj.aaa) {
+        if (args.token.value === req.myObj.aaa[key]) {
+          tokenCheckResult = 'user: "'+key+'" passed'
+        }
+      }
 
       apiResponse(tokenCheckResult)
     }

@@ -41,7 +41,7 @@ export default class ImgFolderRow extends React.Component {
         {row}
       </div>
       <div className={this.state.showResult ? 'std-item-menu' : 'display-none'}>
-        <img src={liveUrl+'assets/images/'+row}></img><br />
+        <img src={liveUrl+'/assets/images/'+row}></img><br />
       </div>
     </div>
 
