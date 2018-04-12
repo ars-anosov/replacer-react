@@ -1,8 +1,10 @@
 'use strict';
 
-var apiTools  = require('../sub_modules/api_tools')
-
-apiTools.apiResJson
+const apiTools  = require('../sub_modules/api_tools')
+const userDb = [
+  {uName: 'user', uPass: 'test'},
+  {uName: 'user2', uPass: 'test2'}
+]
 
 exports.apiAction = function(req, res, next) {
 
@@ -11,11 +13,12 @@ exports.apiAction = function(req, res, next) {
   // ----------------------------------------------------------------------------------
   // Здесь какая-нибудь процедура проверки достоверности "token" например в базе данных
   // ----------------------------------------------------------------------------------
-  if (
-    (args.auth_name.value === 'user' && args.auth_pass.value === 'test')
-    ||
-    (args.auth_name.value === 'user2' && args.auth_pass.value === 'test2')
-    ) {
+  var authStatus = false
+  userDb.map((row,i) => {
+    if (args.auth_name.value === row.uName && args.auth_pass.value === row.uPass) { authStatus = true }
+  })
+
+  if (authStatus) {
     // клиент ввел правильный пароль
     var token_new  = apiTools.randWDclassic(30)
 

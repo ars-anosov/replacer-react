@@ -31,7 +31,7 @@ sudo docker run \
   --env="SFTP_USER=INSERT_HERE_USERNAME" \
   --env="SFTP_PASS=INSERT_HERE_PASSWORD" \
   -it \
-  node:8 bash
+  node:9 bash
 ```
 Дальше все действия внутри контейнера.
 

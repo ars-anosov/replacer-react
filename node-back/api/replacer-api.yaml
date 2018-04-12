@@ -4,7 +4,7 @@ swagger: '2.0'
 #                              API Information                                 #
 ################################################################################
 info:
-  version: 1.0.0
+  version: 1.0.1
   title: replacer-reactor
   contact:
     email: ars.anosov@gmail.com
@@ -32,6 +32,8 @@ tags:
     description: работа с картинками (assets/images)
   - name: Script
     description: работа со скриптами (assets/scripts)
+  - name: Bot
+    description: связка с проектом telegram-bot-telegraf
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
@@ -580,6 +582,39 @@ paths:
       x-swagger-router-controller: Script
     x-swagger-router-controller: Script
 
+  /bot/abonent:
+    get:
+      tags:
+        - Bot
+      description: Получаем подписчиков на бота
+      operationId: bot_abonent_get
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: id
+          in: query
+          required: false
+          type: string
+          description: Номер договора (ID)
+      responses:
+        200:
+          description: Подписчики на бота
+          schema:
+            $ref: '#/definitions/bot_abonent_get'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Bot
+    x-swagger-router-controller: Bot
+
 ################################################################################
 #                                 Definitions                                  #
 ################################################################################
@@ -692,6 +727,27 @@ definitions:
         type: string
       price:
         type: integer
+
+# bot_abonent_get ===============================================================
+  bot_abonent_get:
+    type: array
+    items:
+      type: object
+      properties:
+        tg_id:
+          type: integer
+        id:
+          type: string
+        fio:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        balance:
+          type: string
+        tarif:
+          type: string
 
 # System =======================================================================
   errorModel:
