@@ -8,7 +8,7 @@ exports.apiAction = function(req, res, next) {
   var args            = req.swagger.params
 
   let reqOp = {
-    url:      'http://89.188.160.102:8010/localdb_secret_path_123',
+    url:      'http://89.188.160.102:8010/secret_path',
     method:   'GET'
   }
 
@@ -31,7 +31,7 @@ exports.apiAction = function(req, res, next) {
     apiTools.apiResJson(res, finalResult, 200)
   })
 
-  //apiTools.apiResJson(res, {code: 202, message: 'bot info'}, 202);
+  //apiTools.apiResJson(res, {code: 202, message: 'bot info'}, 202)
   
 
 }

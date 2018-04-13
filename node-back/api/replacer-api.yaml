@@ -43,6 +43,7 @@ paths:
     get:
       tags:
       - Client
+      summary: Получить временный token
       description: Получаем token
       operationId: token_get
       consumes:
@@ -586,6 +587,7 @@ paths:
     get:
       tags:
         - Bot
+      summary: Получить подписчиков
       description: Получаем подписчиков на бота
       operationId: bot_abonent_get
       consumes:
@@ -608,6 +610,42 @@ paths:
           description: Подписчики на бота
           schema:
             $ref: '#/definitions/bot_abonent_get'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+      x-swagger-router-controller: Bot
+    post:
+      tags:
+        - Bot
+      summary: Рассылка спама
+      description: |
+        Сообщение для всех подписчиков 
+      operationId: bot_abonent_post
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          in: header
+          required: true
+          type: string
+          description: token
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/bot_abonent_post'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/dummy'
+        '202':
+          description: spam not posted
+          schema:
+            $ref: '#/definitions/dummy'
         default:
           description: unexpected error
           schema:
@@ -748,6 +786,12 @@ definitions:
           type: string
         tarif:
           type: string
+
+  bot_abonent_post:
+    type: object
+    properties:
+      spam:
+        type: string
 
 # System =======================================================================
   errorModel:

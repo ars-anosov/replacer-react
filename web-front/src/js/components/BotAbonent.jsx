@@ -15,8 +15,7 @@ export class BotAbonent extends React.Component {
 
     this.apiCmd = {
       token:      window.localStorage.getItem('token'),
-      get:        'bot_abonent_get',
-      put:        'bot_abonent_put'
+      get:        'bot_abonent_get'
     }
 
 
