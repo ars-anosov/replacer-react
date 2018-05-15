@@ -41,11 +41,11 @@ exports.apiAction = function(req, res, next) {
       var htmlResult = $.html({decodeEntities: false})
 
 
-      fs.writeFileSync('./static_result/index.html', htmlResult);
 
       srcFilePath = path.join(__dirname,'../static_result/index.html')
       dstFilePath = sftpSettings.sftpPath+'/index.html'
 
+      fs.writeFileSync(srcFilePath, htmlResult)
       sftpTools.sftpPut(sftpSettings, srcFilePath, dstFilePath, (response) => {
         //apiTools.apiResJson(res, response, response.code)
         console.log(response)

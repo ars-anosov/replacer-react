@@ -69,11 +69,10 @@ body.long_content+
 
 
 
-      fs.writeFileSync('./static_result/index.html', htmlResult);
-
       let srcFilePath = path.join(__dirname,'../static_result/index.html')
       let dstFilePath = sftpSettings.sftpPath+'/index.html'
 
+      fs.writeFileSync(srcFilePath, htmlResult)
       sftpTools.sftpPut(sftpSettings, srcFilePath, dstFilePath, (response) => {
         apiTools.apiResJson(res, response, response.code)
       })
