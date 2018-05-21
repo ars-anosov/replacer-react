@@ -39,9 +39,10 @@ export default class BotAbonentRow extends React.Component {
     finalTemplate =
     <div className='std-item'>
       <div className='std-item-header-small' onClick={this.handleClkShowResult}>
-        <b>{row.id}</b> {row.fio}
+        <b>{row.tg_id}</b> {row.fio} (договор {row.id})
       </div>
       <pre className={this.state.showResult ? 'pre-monospace' : 'display-none'}>
+        Telegram ID:         {row.tg_id}<br />
         Номер договора (ID): {row.id}<br />
         ФИО:                 {row.fio}<br />
         телефон:             {row.phone}<br />
